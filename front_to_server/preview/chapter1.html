@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>chapter1.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="%E5%89%8D%E7%AB%AF%E9%83%BD%E6%9C%89%E5%95%A5">前端都有啥</h1>
+<p>前端是一个非常广泛的领域，简单的概括是所有能在设备屏幕上面展示，提供人机交付功能的技术领域，例如 移动端的 app 开发技术，PC 端的软件开发技术，还有比如一些非常规设备的比如智能家电，智能穿戴设备屏幕上的软件开发技术，都属于前端技术范畴。当然，我们这个系列讨论的范围，主要是以 html，css，js 为基础，在浏览器、webView等软件上面进行交互界面显示的前端技术及生态。</p>
+<h2 id="%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B">发展历程</h2>
+<p>web前端技术发展主要是随着浏览器技术及网络技术的发展而发展的，下面介绍下一些主要的发展方向</p>
+<h3 id="%E5%B7%A5%E5%85%B7%E7%B1%BB%E5%BA%93">工具类库</h3>
+<p>随着浏览器发展及网速的提升，更多元素比如图片、动画、视频被包含到网页展示之中，交互越来越多带来的是 js 代码在网页开发占比越来越大，而随着浏览器领域越来越多公司入局，市面上的浏览器五花八门，带来很多标准化问题，&quot;代码兼容&quot;称为那时候 web 前端开发者最需要关注的问题，这时候各种的工具类库就诞生了，比如<code>jQuery</code>、<code>underscore</code>等等，这个时期的网页很多是通过后端语言模板在服务端将页面拼接完成返回前端的，比较常见的是<code>jsp</code>,<code>asp</code>,<code>php</code>等后端模板语言</p>
+<h3 id="%E4%BA%A4%E4%BA%92%E6%96%B9%E5%BC%8F">交互方式</h3>
+<p>随着<code>XmlHttpRequest</code>俗称<code>ajax</code>方式的出现，网页摆脱了<code>加载-交互-刷新</code>的流程，页面可以在不刷新的情况下拿到数据，整体的交互复杂度就更上一层楼。在这个阶段前后由于前端页面渲染可以用过 ajax 获取数据在前端去完成了，所以慢慢形成比较独立的前端工作职责，<code>前后端分离</code>的代码架构也渐渐被广泛使用</p>
+<h3 id="%E6%A8%A1%E5%9D%97%E5%8C%96">模块化</h3>
+<p>前面说过 js 主要是用来对页面的展示进行控制，那么随着交互越来越复杂，代码自然就越来越多，原有采用 <code>js内联</code>，或者<code>单js文件</code>等单一的代码组织方式会导致代码杂乱，这个阶段开发者开始关注开始关注代码组织问题，因此<code>cmd</code>、<code>amd</code>、<code>umd</code>等代码模块规范就出现了</p>
+<h3 id="%E5%B7%A5%E7%A8%8B%E5%8C%96">工程化</h3>
+<p>随着nodejs 在前端工具链上的应用，前端代码上线从之前的单纯压缩，开始进入了编译阶段，工具从<code>grunt</code>到<code>glup</code>再到后续的<code>webpack</code>、<code>rollup</code>等等，配合包管理工具(npm，yarn等)，将<code>模块化</code>、<code>兼容性</code>、<code>依赖处理</code>、<code>资源处理</code>从代码运行阶段提前到了代码的构建编译阶段去解决</p>
+<h3 id="%E6%A1%86%E6%9E%B6">框架</h3>
+<p>前端的代码交互刚开始都是<code>拿数据 ——&gt; 渲染模板 ——&gt; 操作dom/提供交互</code> ，随着场景和交互的复杂度越来越高，这种模板数据操作混合的研发方式给后续的维护带来了困难，因此大家想到了后端经典的代码组织设计模式，基于此有了<code>backbone</code>、<code>emberjs</code>,<code>angular</code> 等大型的应用级别框架，后续的发展大家也知道了，基于<code>数据驱动</code>的框架称为了主流，<code>vue</code>,<code>react</code>被广泛应用</p>
+<h3 id="%E5%A4%A7%E5%89%8D%E7%AB%AF%E8%B7%A8%E7%AB%AF%E8%B7%A8%E5%B9%B3%E5%8F%B0">大前端/跨端跨平台</h3>
+<p>随着移动端技术的发展，构筑一套代码多环境运行又成为了新的关注点，而浏览器/webView作为天然的跨端平台使得前端可以在不同的设备上面运行，后续许多跨端框架和方案的都可以使用 js配合对应模板语言进行开发，比如<code>electron</code>、<code>react native</code>、<code>微信/支付宝小程序</code>等等，还有一些跨平台框架也借鉴了<code>数据驱动</code>的模式进行设计，比如 <code>flutter</code> 等等，都有数据驱动设计的影子</p>
+<h3 id="%E5%89%8D%E5%90%8E%E7%AB%AF%E5%90%8C%E6%9E%84">前后端同构</h3>
+<p>由于 nodejs 在服务端的应用，本来由于代码维护问题而进行前后端分离的趋势，又出现了一些新的变化，通过应用框架的设计和工程化步骤，使得前端代码在进行编译处理之后，可以在 nodejs 服务上面运行，直接生成静态 html，解决了前后端分离带来的 <code>SEO</code> 问题和<code>加载页面性能</code>问题</p>
+<h3 id="web102030">web1.0/2.0/3.0</h3>
+<p>最近web3.0 这个名词火了起来，很多同学说只听过2.0，3.0又是个啥，简单研究了下，这几个版本主要是按照<code>内容资产的生产与归属</code>来区分的</p>
+<ul>
+<li>web1.0: 内容由平台/网站生产，归平台/网站所有，比如门户网站</li>
+<li>web2.0: 内容由用户生产，内容归平台/网站所有， 比如博客，微博，短视频平台等等</li>
+<li>web3.0: 内容由用户生产，内容基于区块链，归用户所有</li>
+</ul>
+<h2 id="%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF%E7%9A%84%E4%B8%89%E9%A9%BE%E9%A9%AC%E8%BD%A6">前端技术的三驾马车</h2>
+<h3 id="%E4%B8%80%E5%88%87%E7%9A%84%E6%A0%B9%E6%BA%90--html">一切的根源 —— HTML</h3>
+<p>为啥说是一切的根源，因为作为网页来说，不管你多炫酷，多复杂，在页面中都是通过 html(HyperText Markup Language)超文本标记语言来展示的</p>
+<p>html 作为一种标记语言，提供了标签用于描述文档，浏览器会根据标签去进行不同的解析，去展示文档，比如<code>div</code>标签表示一个行级的块状元素，而<code>span</code>表示行内的内联元素,<code>table</code>、<code>tr</code>、<code>td</code>组合可以被解析称为一个表格</p>
+<p><code>html5</code> 指的是<code>html 4.01</code>版本，是html 的第五个修订版，需要注意的 html5并非一种技术，而是标准， 一般指的是新的 html 标签+ css3 + bom/dom api的一整个组合，其大大的增强了网页的能力和应用范围。目前<code>html6</code>的标准也在起草种，相信网页会随着标准的推进具备更多能力，</p>
+<p>需要注意的是，我们平常说的<code>H5</code>其实不是指<code>html5</code>，而是一种移动端网页的表现形式</p>
+<p><a href="https://html.spec.whatwg.org/">资料</a></p>
+<h3 id="%E7%BB%99%E4%BD%A0%E7%9A%84%E9%A1%B5%E9%9D%A2%E5%8C%96%E5%8C%96%E5%A6%86--css">给你的页面化化妆 —— CSS</h3>
+<p>如果说 HTML 为网页确定了有那些内容，那么 CSS 就是用来修饰这些内容的。
+CSS 的全称是<code>Cascading Style Sheets</code>(叠层样式表)，CSS 由以下三个部分组成</p>
+<ul>
+<li>选择器(selector): 用于选择出来符合条件的标签元素，将属性和值作用于标签，选择器有一定的优先级，用于多个 CSS 作用于同个标签且存在同样属性时，确定生效的CSS，常用的选择器有<code>标签选择器</code>、<code>ID 选择器</code>、<code>类型选择器</code>等等</li>
+<li>属性(property): 用于控制选择器生效时候的样式，CSS 规定的许多的属性,比如<code>width,height,margin,padding</code>等等</li>
+<li>值(value): 用于确定属性的设置值</li>
+</ul>
+<p>CSS 有三种添加的模式</p>
+<ul>
+<li>Inline: 通过 <code>style</code>属性添加到 html 标签中</li>
+<li>Internal: 通过<code>&lt;style&gt;</code>标签将 css 写入，<code>&lt;style&gt;</code>标签放置与<code>head</code>标签之中</li>
+<li>External: 用过<code>&lt;link&gt;</code>将 css 文件引入 html 文档中</li>
+</ul>
+<p>CSS3版本添加了更多的选择器及属性，用来解决之前需要用 js 进行操作的样式，比如<code>border-radius</code>圆角，<code>box-shadow</code>阴影等等，除此之外还添加了许多控制动画的属性，使得可以直接进行通过 css 控制元素的动画</p>
+<p>为了解决原生css 复用、嵌套，变量的问题，CSS预处理器被现代 web 开发广泛应用，目前比较常见的是<code>less</code>、<code>sass/scss</code>、<code>stylus</code></p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS">css</a>
+<a href="https://stackshare.io/stackups/less-vs-sass-vs-stylus">less VS sass VS stylus</a></p>
+<h3 id="%E6%8E%A7%E5%88%B6%E4%BD%A0%E7%9A%84%E9%A1%B5%E9%9D%A2--js">控制你的页面 ———— JS</h3>
+<p>如果说 html 和 css 提供的是 web 页面展示的基础，那么 js 提供的是控制页面的能力，js 是一个总称，js 这门语言的全称为<a href="https://tc39.es/ecma262/">ecma script</a>,而我们平常说的 js，还包括操作浏览器接口的 BOM api，还有操作页面元素 的 DOM api,还有 nodejs 的 api，<code>ecma sciprt</code>经过多年发展形成了多套标准，目前用的比较多的有<code>ES2015</code>, 还有一些语言的子集目前由于更加好的语言特性及严谨性，也被更多的人使用，比如<code>typescript</code>；作为web 开发来说，我们会通过<code>bom</code>、<code>dom</code>来对页面进行控制及功能增强，这部分和语言无关，主要是浏览器的功能增强，目前有越来越多的特性和能力随着浏览器的发展被加入到<code>bom</code>、<code>dom</code> api 之中，比如以下的一些新特性</p>
+<ul>
+<li>启用多线程的 <code>web worker</code></li>
+<li>服务器和浏览器中间的 <code>service worker</code>，</li>
+<li>用于页面绘图的 <code>canvas api</code></li>
+<li>用于音视频流播放处理的 <code>MSE</code> 等等</li>
+</ul>
+<p>如果 js 要详细讲的话是会还在后面做一些专题来讲，这里只做一个简单的介绍</p>
+<h2 id="%E7%8E%B0%E4%BB%A3-web-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B">现代 web 研发流程</h2>
+<p>目前比较主流的研发模式是 web 应用通过 <code>web 框架</code>作为基础来建构，选择 js 的一种<code>语言或者版本</code>进行开发，通过<code>包管理工具</code>管理公共依赖，通过<code>打包工具</code> 进行资源的构建，通过一种模式<code>发布上线</code></p>
+<p>web框架选择</p>
+<ul>
+<li>React</li>
+<li>Vue</li>
+</ul>
+<p>语言选择</p>
+<ul>
+<li>ES6</li>
+<li>typescript</li>
+</ul>
+<p>包管理选择</p>
+<ul>
+<li>npm</li>
+<li>pnpm</li>
+<li>yarn</li>
+</ul>
+<p>打包构建工具选择</p>
+<ul>
+<li>webpack</li>
+<li>rollup</li>
+<li>vite</li>
+</ul>
+<p>部署发布模式选择</p>
+<ul>
+<li>前后端分离</li>
+<li>前后端同构服务端渲染</li>
+</ul>
+<h2 id="%E6%80%BB%E7%BB%93">总结</h2>
+<p>上面主要把前端部分的具体概念和模块进行了介绍，上面的东西如果拆开细讲，每个点都是一个巨大篇幅，后面我们再分别讨论</p>
+
+</body>
+</html>
