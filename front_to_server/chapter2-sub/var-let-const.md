@@ -27,11 +27,10 @@ var 声明的变量可以被重复定义
 ``` javascript
 var a = 'hello';
 
-function foo(){
+if(1>0){
  var a = 'world';
 }
 
-foo();
 console.log(a); // print 'world'
 ```
 
@@ -98,6 +97,32 @@ function foo() {
 
 通过 IIFE( 立即执行函数)，形成闭包去保存传入当前的 i 值, 从而打印对应的值
 
+还有另外一个和变量提升相关的问题，如下
+
+``` javascript
+var a = 1;
+function foo(){
+   console.log(a);
+   var a = 2;
+}
+
+foo(); // print undefined
+```
+
+上面的运行结果是`undefined`,而不是直觉的`1`,就是由于变量提升到对应作用域顶端带来的问题,提升之后代码如下
+
+``` javascript
+var a = 1;
+function foo() {
+   var a = undefined;
+   console.log(a);
+   a = 2;
+}
+foo();
+```
+
+ 如果我们把`var a = 2` 删除，就会打印`1`
+
 ## let
 
 我们通过和 var 做对比来了解 let
@@ -116,13 +141,52 @@ b = 1; // no error
 
 ```
 
+### let 中的变量提升
+
+let 定义的变量也会进行变量提升，但是和 var 的区别是，提升之后不会使用 undefined 进行初始化，因此如果在定义之前被使用，会抛错
+
+``` javascript
+let a = 1;
+function foo() {
+  console.log(a) ;
+  let a = 2;
+}
+foo(); // error: Uncaught ReferenceError: Cannot access 'a' before initialization
+
+```
+
 ### let 存在块级作用域
 
-使用 let 定义的变量存在块级作用域，这样子
+使用 let 定义的变量存在块级作用域
 
-<iframe src="https://codesandbox.io/embed/twilight-leaf-qxpfuj?fontsize=14&hidenavigation=1&theme=dark"
-     style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"
-     title="twilight-leaf-qxpfuj"
-     allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
-     sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
-   ></iframe>
+``` javascript
+
+let a = 1;
+function foo() {
+   let a = 2;
+}
+
+console.log(a); // print 1
+
+```
+
+let 在 `for` 、`for in`、`for of` 的循环在每次迭代时都为x创建新的绑定,也就是说不会出现如 var 那种预期之外的结果
+
+## const
+
+const 的大部分特点和 let 是一样的，区别在于通过 const 定义的是一个常量，不可被修改
+
+``` javascript
+const a = 1;
+a = 2; // error  Uncaught SyntaxError: Identifier 'a' has already been declared
+```
+
+对于定义引用类型，对于类型本生的修改，是没有问题的
+
+``` javascript
+
+const a = {b:1}
+
+a.b = 2; // no error
+
+```
