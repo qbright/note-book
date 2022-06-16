@@ -102,3 +102,27 @@ function foo() {
 
 我们通过和 var 做对比来了解 let
 
+### let 不可以被重复定义
+
+使用 let 定义的变量不可以被再次定义,但是可以被重新赋值
+
+``` javascript
+
+let a = 0;
+let a = 1; // error: Uncaught SyntaxError: Identifier 'a' has already been declared
+
+let b = 0;
+b = 1; // no error
+
+```
+
+### let 存在块级作用域
+
+使用 let 定义的变量存在块级作用域，这样子
+
+<iframe src="https://codesandbox.io/embed/twilight-leaf-qxpfuj?fontsize=14&hidenavigation=1&theme=dark"
+     style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"
+     title="twilight-leaf-qxpfuj"
+     allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+     sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+   ></iframe>
