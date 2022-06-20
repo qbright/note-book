@@ -23,6 +23,8 @@ JS 语言在诞生之后就伴随着"不严谨","问题多"的说法, 加上浏�
 
 [==/===](#==/===)
 
+[防抖debounce/节流throttle]
+
 [document.appendChild/document.write/element.innerHTML](#document.appendChild/document.write/element.innerHTML)
 
 [闭包]
