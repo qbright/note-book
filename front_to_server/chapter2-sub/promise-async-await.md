@@ -143,3 +143,50 @@ let b2 = a2.then((value)=>{
 当运行过程中出现错误，比如`throw new Error()`时，promise 会构造一个`rejected`状态的 promise 返回
 
 当需要全局对没有处理的 promise 进行处理时，可以监听 `unhandledrejection` 方法，对全局的未处理的 promise 进行处理
+
+## async/await
+
+在讨论完 Promise 之后，我们再来看看 async/await 关键字，简单来说通过 async/await 可以定义出来 async 函数，并且在函数中使用 await 去 简化 Promise的写法，使其看起来更加像同步写法
+
+``` javascript
+
+function m1() {
+  return new Promise(resolve=>{
+    setTimeout(()=>{
+      resolve(123);
+    },1000);
+  });
+}
+
+async function m2() {
+  console.log('do something');
+  let a = await m1(); // wait 1s and return 123;
+  console.log(a); // print 123;
+}
+
+```
+
+await 关键字只能在 `async` 修饰的函数中使用，一个函数如果被`async`函数，那么返回值就是一个 Promise对象，这个可以类比 Promise的`then`和`catch`的返回值
+
+``` javascript
+
+async function m() {
+  return 1;
+}
+ // 相当于
+async function m() {
+  return Promise.resolve(1);
+}
+
+async function m1() {
+  console.log('do something');
+}
+// 相当于
+async function m1() {
+  console.log('do something');
+  return Promise.resolve();
+}
+
+```
+
+async/await可以直接使用 `try/catch` 进行错误捕获处理
