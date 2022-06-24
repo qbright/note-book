@@ -5,7 +5,6 @@ const argv = process.argv;
 const args = argv.slice(2, argv.length);
 const tpl = fs.readFileSync('./.tpl').toString();
 
-console.log(tpl);
 if (!args.length) {
 	throw new Error('path is null');
 }

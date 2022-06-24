@@ -1,4 +1,10 @@
-# Promise/async、await
+---
+title: promise-async-await
+tags: [jsDiff]
+date: 2022-05-24 10:41:28
+authors: zqbright
+---
+
 
 ## 异步与单线程
 

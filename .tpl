@@ -1,6 +1,6 @@
 ---
 title: $1
-tags:[]
+tags: []
 date: $2
 authors: zqbright
 ---
