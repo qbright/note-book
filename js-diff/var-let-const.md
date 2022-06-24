@@ -17,6 +17,7 @@ authors: zqbright
 变量提升是 JavaScript 的一种机制, 简单来说就是在执行代码之前，变量和函数声明会移至其作用域的顶部
 
 var/let/const的区别主要还是在其关键字对应声明的变量的作用域区别，还有变量提升带来的访问区别
+<!--truncate-->
 
 ## var
 
