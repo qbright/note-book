@@ -1,5 +1,5 @@
 ---
-title: js-diff/var-let-const
+title: var-let-const
 tags: [jsDiff]
 date: 2022-05-24 10:47:00
 ---
