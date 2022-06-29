@@ -15,7 +15,7 @@ JS 语言在诞生之后就伴随着"不严谨","问题多"的说法, 加上浏�
 
 [async、await/promise](./promise-async-await.md)
 
-[call/apply/bind]
+[context/this/call/apply/bind]
 
 [微任务/宏任务]
 

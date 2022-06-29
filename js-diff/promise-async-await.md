@@ -1,5 +1,5 @@
 ---
-title: promise-async-await
+title: promise/async/await
 tags: [jsDiff]
 date: 2022-05-24 10:41:28
 ---
@@ -196,3 +196,10 @@ async function m1() {
 ```
 
 async/await可以直接使用 `try/catch` 进行错误捕获处理
+
+
+
+## 相关问题
+
+
+### 实现一个 promise
