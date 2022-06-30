@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/3.0.0/tocbot.css">
+    <!-- <link rel="stylesheet" href="docs/style.css"> -->
+    <style>
+      body {
+  padding: 40px 80px;
+  font: 14px/1.5 "Helvetica Neue", Helvetica, sans-serif;
+  background: #181818 url(images/bg.png);
+  text-align: center;
+}
+
+#content {
+  margin: 0 auto;
+  padding: 10px 40px;
+  text-align: left;
+  background: white;
+  width: 50%;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  -webkit-box-shadow: 0 2px 5px 0 black;
+}
+
+#menu {
+  font-size: 13px;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+}
+
+#menu ul {
+  margin: 0;
+  padding: 0;
+}
+
+#menu li {
+  list-style: none;
+}
+
+#menu a {
+  color: rgba(255,255,255,.5);
+  text-decoration: none;
+}
+
+#menu a:hover {
+  color: white;
+}
+
+#menu .active a {
+  color: white;
+}
+
+pre {
+  padding: 10px;
+}
+
+code {
+  font-family: monaco, monospace, sans-serif;
+  font-size: 0.85em;
+}
+
+p code {
+  border: 1px solid #ECEA75;
+  padding: 1px 3px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  background: #FDFCD1;
+}
+
+pre {
+  padding: 20px 25px;
+  border: 1px solid #ddd;
+  -webkit-box-shadow: inset 0 0 5px #eee;
+  -moz-box-shadow: inset 0 0 5px #eee;
+  box-shadow: inset 0 0 5px #eee;
+}
+
+code .comment { color: #ddd }
+code .init { color: #2F6FAD }
+code .string { color: #5890AD }
+code .keyword { color: #8A6343 }
+code .number { color: #2F6FAD }
+
+/* override tocbot style to avoid vertical white line in table of content */
+.toc-link::before {
+  content: initial;
+}
+
+.error {
+  color:red;
+  font-weight:bold;
+}
+
+    </style>
+  </head>
+  <body>
+    <ul id="menu"></ul>
+    <div id="content">    <section class="suite">
+      <h1>Promises/A+ Tests</h1>
+      <dl>
+        <section class="suite">
+          <h1>2.1.2.1: When fulfilled, a promise: must not transition to any other state.</h1>
+          <dl>
+            <dt>already-fulfilled</dt>
+            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+            <dd><pre><code>test(resolved(value), done);</code></pre></dd>
+            <dt>immediately-fulfilled</dt>
+            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+            <dd><pre><code>var d = deferred();
+test(d.promise, done);
+d.resolve(value);</code></pre></dd>
+            <dt>eventually-fulfilled</dt>
+            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+            <dd><pre><code>var d = deferred();
+test(d.promise, done);
+setTimeout(function () {
+    d.resolve(value);
+}, 50);</code></pre></dd>
+            <dt>trying to fulfill then immediately reject</dt>
+            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+            <dd><pre><code>var d = deferred();
+var onFulfilledCalled = false;
+d.promise.then(function onFulfilled() {
+    onFulfilledCalled = true;
+}, function onRejected() {
+    assert.strictEqual(onFulfilledCalled, false);
+    done();
+});
+d.resolve(dummy);
+d.reject(dummy);
+setTimeout(done, 100);</code></pre></dd>
+            <dt>trying to fulfill then reject, delayed</dt>
+            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+            <dd><pre><code>var d = deferred();
+var onFulfilledCalled = false;
+d.promise.then(function onFulfilled() {
+    onFulfilledCalled = true;
+}, function onRejected() {
+    assert.strictEqual(onFulfilledCalled, false);
+    done();
+});
+setTimeout(function () {
+    d.resolve(dummy);
+    d.reject(dummy);
+}, 50);
+setTimeout(done, 100);</code></pre></dd>
+            <dt>trying to fulfill immediately then reject delayed</dt>
+            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+            <dd><pre><code>var d = deferred();
+var onFulfilledCalled = false;
+d.promise.then(function onFulfilled() {
+    onFulfilledCalled = true;
+}, function onRejected() {
+    assert.strictEqual(onFulfilledCalled, false);
+    done();
+});
+d.resolve(dummy);
+setTimeout(function () {
+    d.reject(dummy);
+}, 50);
+setTimeout(done, 100);</code></pre></dd>
+          </dl>
+        </section>
+        <section class="suite">
+          <h1>2.1.3.1: When rejected, a promise: must not transition to any other state.</h1>
+          <dl>
+            <dt>already-rejected</dt>
+            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+            <dd><pre><code>test(rejected(reason), done);</code></pre></dd>
+            <dt class="error">already-rejected</dt>
+            <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+            <dd class="error"><pre><code>test(rejected(reason), done);</code></pre></dd>
+            <dd class="error">Error: done() called multiple times in test &#x3C;Promises/A+ Tests 2.1.3.1: When rejected, a promise: must not transition to any other state. already-rejected&#x3E; of file /Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dd>
+            <dt>immediately-rejected</dt>
+            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+            <dd><pre><code>var d = deferred();
+test(d.promise, done);
+d.reject(reason);</code></pre></dd>
+            <dt>eventually-rejected</dt>
+            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+            <dd><pre><code>var d = deferred();
+test(d.promise, done);
+setTimeout(function () {
+    d.reject(reason);
+}, 50);</code></pre></dd>
+            <dt>trying to reject then immediately fulfill</dt>
+            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+            <dd><pre><code>var d = deferred();
+var onRejectedCalled = false;
+d.promise.then(function onFulfilled() {
+    assert.strictEqual(onRejectedCalled, false);
+    done();
+}, function onRejected() {
+    onRejectedCalled = true;
+});
+d.reject(dummy);
+d.resolve(dummy);
+setTimeout(done, 100);</code></pre></dd>
+            <dt>trying to reject then fulfill, delayed</dt>
+            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+            <dd><pre><code>var d = deferred();
+var onRejectedCalled = false;
+d.promise.then(function onFulfilled() {
+    assert.strictEqual(onRejectedCalled, false);
+    done();
+}, function onRejected() {
+    onRejectedCalled = true;
+});
+setTimeout(function () {
+    d.reject(dummy);
+    d.resolve(dummy);
+}, 50);
+setTimeout(done, 100);</code></pre></dd>
+            <dt>trying to reject immediately then fulfill delayed</dt>
+            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+            <dd><pre><code>var d = deferred();
+var onRejectedCalled = false;
+d.promise.then(function onFulfilled() {
+    assert.strictEqual(onRejectedCalled, false);
+    done();
+}, function onRejected() {
+    onRejectedCalled = true;
+});
+d.reject(dummy);
+setTimeout(function () {
+    d.resolve(dummy);
+}, 50);
+setTimeout(done, 100);</code></pre></dd>
+          </dl>
+        </section>
+        <section class="suite">
+          <h1>2.2.1: Both &#x60;onFulfilled&#x60; and &#x60;onRejected&#x60; are optional arguments.</h1>
+          <dl>
+            <section class="suite">
+              <h1>2.2.1.1: If &#x60;onFulfilled&#x60; is not a function, it must be ignored.</h1>
+              <dl>
+                <section class="suite">
+                  <h1>applied to a directly-rejected promise</h1>
+                  <dl>
+                    <dt class="error">&#x60;onFulfilled&#x60; is &#x60;undefined&#x60;</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dd class="error"><pre><code>rejected(dummy).then(nonFunction, function () {
+    done();
+});</code></pre></dd>
+                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js)</dd>
+                    <dt class="error">&#x60;onFulfilled&#x60; is &#x60;null&#x60;</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dd class="error"><pre><code>rejected(dummy).then(nonFunction, function () {
+    done();
+});</code></pre></dd>
+                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js)</dd>
+                    <dt class="error">&#x60;onFulfilled&#x60; is &#x60;false&#x60;</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dd class="error"><pre><code>rejected(dummy).then(nonFunction, function () {
+    done();
+});</code></pre></dd>
+                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js)</dd>
+                    <dt class="error">&#x60;onFulfilled&#x60; is &#x60;5&#x60;</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dd class="error"><pre><code>rejected(dummy).then(nonFunction, function () {
+    done();
+});</code></pre></dd>
+                    <dd class="error">TypeError: this.successFn.call is not a function</dd>
+                    <dt class="error">&#x60;onFulfilled&#x60; is an object</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dd class="error"><pre><code>rejected(dummy).then(nonFunction, function () {
+    done();
+});</code></pre></dd>
+                    <dd class="error">TypeError: this.successFn.call is not a function</dd>
+                  </dl>
+                </section>
+                <section class="suite">
+                  <h1>applied to a promise rejected and then chained off of</h1>
+                  <dl>
+                    <dt class="error">&#x60;onFulfilled&#x60; is &#x60;undefined&#x60;</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dd class="error"><pre><code>rejected(dummy).then(function () { }, undefined).then(nonFunction, function () {
+    done();
+});</code></pre></dd>
+                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js)</dd>
+                    <dt class="error">&#x60;onFulfilled&#x60; is &#x60;null&#x60;</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dd class="error"><pre><code>rejected(dummy).then(function () { }, undefined).then(nonFunction, function () {
+    done();
+});</code></pre></dd>
+                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js)</dd>
+                    <dt class="error">&#x60;onFulfilled&#x60; is &#x60;false&#x60;</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dd class="error"><pre><code>rejected(dummy).then(function () { }, undefined).then(nonFunction, function () {
+    done();
+});</code></pre></dd>
+                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js)</dd>
+                    <dt class="error">&#x60;onFulfilled&#x60; is &#x60;5&#x60;</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dd class="error"><pre><code>rejected(dummy).then(function () { }, undefined).then(nonFunction, function () {
+    done();
+});</code></pre></dd>
+                    <dd class="error">TypeError: this.successFn.call is not a function</dd>
+                    <dt class="error">&#x60;onFulfilled&#x60; is an object</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dd class="error"><pre><code>rejected(dummy).then(function () { }, undefined).then(nonFunction, function () {
+    done();
+});</code></pre></dd>
+                    <dd class="error">TypeError: this.successFn.call is not a function</dd>
+                  </dl>
+                </section>
+              </dl>
+            </section>
+            <section class="suite">
+              <h1>2.2.1.2: If &#x60;onRejected&#x60; is not a function, it must be ignored.</h1>
+              <dl>
+                <section class="suite">
+                  <h1>applied to a directly-fulfilled promise</h1>
+                  <dl>
+                    <dt>&#x60;onRejected&#x60; is &#x60;undefined&#x60;</dt>
+                    <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dd><pre><code>resolved(dummy).then(function () {
+    done();
+}, nonFunction);</code></pre></dd>
+                    <dt>&#x60;onRejected&#x60; is &#x60;null&#x60;</dt>
+                    <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dd><pre><code>resolved(dummy).then(function () {
+    done();
+}, nonFunction);</code></pre></dd>
+                    <dt>&#x60;onRejected&#x60; is &#x60;false&#x60;</dt>
+                    <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dd><pre><code>resolved(dummy).then(function () {
+    done();
+}, nonFunction);</code></pre></dd>
+                    <dt>&#x60;onRejected&#x60; is &#x60;5&#x60;</dt>
+                    <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dd><pre><code>resolved(dummy).then(function () {
+    done();
+}, nonFunction);</code></pre></dd>
+                    <dt>&#x60;onRejected&#x60; is an object</dt>
+                    <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dd><pre><code>resolved(dummy).then(function () {
+    done();
+}, nonFunction);</code></pre></dd>
+                  </dl>
+                </section>
+                <section class="suite">
+                  <h1>applied to a promise fulfilled and then chained off of</h1>
+                  <dl>
+                    <dt class="error">&#x60;onFulfilled&#x60; is &#x60;undefined&#x60;</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dd class="error"><pre><code>resolved(dummy).then(undefined, function () { }).then(function () {
+    done();
+}, nonFunction);</code></pre></dd>
+                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js)</dd>
+                    <dt class="error">&#x60;onFulfilled&#x60; is &#x60;null&#x60;</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dd class="error"><pre><code>resolved(dummy).then(undefined, function () { }).then(function () {
+    done();
+}, nonFunction);</code></pre></dd>
+                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js)</dd>
+                    <dt class="error">&#x60;onFulfilled&#x60; is &#x60;false&#x60;</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dd class="error"><pre><code>resolved(dummy).then(undefined, function () { }).then(function () {
+    done();
+}, nonFunction);</code></pre></dd>
+                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js)</dd>
+                    <dt class="error">&#x60;onFulfilled&#x60; is &#x60;5&#x60;</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dd class="error"><pre><code>resolved(dummy).then(undefined, function () { }).then(function () {
+    done();
+}, nonFunction);</code></pre></dd>
+                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js)</dd>
+                    <dt class="error">&#x60;onFulfilled&#x60; is an object</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dd class="error"><pre><code>resolved(dummy).then(undefined, function () { }).then(function () {
+    done();
+}, nonFunction);</code></pre></dd>
+                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js)</dd>
+                  </dl>
+                </section>
+              </dl>
+            </section>
+          </dl>
+        </section>
+        <section class="suite">
+          <h1>2.2.2: If &#x60;onFulfilled&#x60; is a function,</h1>
+          <dl>
+            <section class="suite">
+              <h1>2.2.2.1: it must be called after &#x60;promise&#x60; is fulfilled, with &#x60;promise&#x60;&#x2019;s fulfillment value as its first argument.</h1>
+              <dl>
+                <dt>already-fulfilled</dt>
+                <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                <dd><pre><code>test(resolved(value), done);</code></pre></dd>
+                <dt>immediately-fulfilled</dt>
+                <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                <dd><pre><code>var d = deferred();
+test(d.promise, done);
+d.resolve(value);</code></pre></dd>
+                <dt>eventually-fulfilled</dt>
+                <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                <dd><pre><code>var d = deferred();
+test(d.promise, done);
+setTimeout(function () {
+    d.resolve(value);
+}, 50);</code></pre></dd>
+              </dl>
+            </section>
+            <section class="suite">
+              <h1>2.2.2.2: it must not be called before &#x60;promise&#x60; is fulfilled</h1>
+              <dl>
+                <dt>fulfilled after a delay</dt>
+                <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                <dd><pre><code>var d = deferred();
+var isFulfilled = false;
+d.promise.then(function onFulfilled() {
+    assert.strictEqual(isFulfilled, true);
+    done();
+});
+setTimeout(function () {
+    d.resolve(dummy);
+    isFulfilled = true;
+}, 50);</code></pre></dd>
+                <dt>never fulfilled</dt>
+                <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                <dd><pre><code>var d = deferred();
+var onFulfilledCalled = false;
+d.promise.then(function onFulfilled() {
+    onFulfilledCalled = true;
+    done();
+});
+setTimeout(function () {
+    assert.strictEqual(onFulfilledCalled, false);
+    done();
+}, 150);</code></pre></dd>
+              </dl>
+            </section>
+            <section class="suite">
+              <h1>2.2.2.3: it must not be called more than once.</h1>
+              <dl>
+                <dt>already-fulfilled</dt>
+                <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                <dd><pre><code>var timesCalled = 0;
+resolved(dummy).then(function onFulfilled() {
+    assert.strictEqual(++timesCalled, 1);
+    done();
+});</code></pre></dd>
+                <dt>trying to fulfill a pending promise more than once, immediately</dt>
+                <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                <dd><pre><code>var d = deferred();
+var timesCalled = 0;
+d.promise.then(function onFulfilled() {
+    assert.strictEqual(++timesCalled, 1);
+    done();
+});
+d.resolve(dummy);
+d.resolve(dummy);</code></pre></dd>
+                <dt>trying to fulfill a pending promise more than once, delayed</dt>
+                <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                <dd><pre><code>var d = deferred();
+var timesCalled = 0;
+d.promise.then(function onFulfilled() {
+    assert.strictEqual(++timesCalled, 1);
+    done();
+});
+setTimeout(function () {
+    d.resolve(dummy);
+    d.resolve(dummy);
+}, 50);</code></pre></dd>
+                <dt>trying to fulfill a pending promise more than once, immediately then delayed</dt>
+                <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                <dd><pre><code>var d = deferred();
+var timesCalled = 0;
+d.promise.then(function onFulfilled() {
+    assert.strictEqual(++timesCalled, 1);
+    done();
+});
+d.resolve(dummy);
+setTimeout(function () {
+    d.resolve(dummy);
+}, 50);</code></pre></dd>
+                <dt>when multiple &#x60;then&#x60; calls are made, spaced apart in time</dt>
+                <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                <dd><pre><code>var d = deferred();
+var timesCalled = [0, 0, 0];
+d.promise.then(function onFulfilled() {
+    assert.strictEqual(++timesCalled[0], 1);
+});
+setTimeout(function () {
+    d.promise.then(function onFulfilled() {
+        assert.strictEqual(++timesCalled[1], 1);
+    });
+}, 50);
+setTimeout(function () {
+    d.promise.then(function onFulfilled() {
+        assert.strictEqual(++timesCalled[2], 1);
+        done();
+    });
+}, 100);
+setTimeout(function () {
+    d.resolve(dummy);
+}, 150);</code></pre></dd>
+                <dt>when &#x60;then&#x60; is interleaved with fulfillment</dt>
+                <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                <dd><pre><code>var d = deferred();
+var timesCalled = [0, 0];
+d.promise.then(function onFulfilled() {
+    assert.strictEqual(++timesCalled[0], 1);
+});
+d.resolve(dummy);
+d.promise.then(function onFulfilled() {
+    assert.strictEqual(++timesCalled[1], 1);
+    done();
+});</code></pre></dd>
+                <dt class="error">when &#x60;then&#x60; is interleaved with fulfillment</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                <dd class="error"><pre><code>var d = deferred();
+var timesCalled = [0, 0];
+d.promise.then(function onFulfilled() {
+    assert.strictEqual(++timesCalled[0], 1);
+});
+d.resolve(dummy);
+d.promise.then(function onFulfilled() {
+    assert.strictEqual(++timesCalled[1], 1);
+    done();
+});</code></pre></dd>
+                <dd class="error">AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+2 !== 1
+</dd>
+              </dl>
+            </section>
+          </dl>
+        </section>
+      </dl>
+    </section>
+</div>
+<a href="http://github.com/visionmedia/superagent"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub"></a>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
+<script>
+  $('code').each(function(){
+    $(this).html(highlight($(this).text()));
+  });
+
+  function highlight(js) {
+    return js
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/('.*?')/gm, '<span class="string">$1</span>')
+      .replace(/(\d+\.\d+)/gm, '<span class="number">$1</span>')
+      .replace(/(\d+)/gm, '<span class="number">$1</span>')
+      .replace(/\bnew *(\w+)/gm, '<span class="keyword">new</span> <span class="init">$1</span>')
+      .replace(/\b(function|new|throw|return|var|if|else)\b/gm, '<span class="keyword">$1</span>')
+  }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/3.0.0/tocbot.js"></script>
+<script>
+  // Only use tocbot for main docs, not test docs
+  if (document.querySelector('#superagent')) {
+    tocbot.init({
+      // Where to render the table of contents.
+      tocSelector: '#menu',
+      // Where to grab the headings to build the table of contents.
+      contentSelector: '#content',
+      // Which headings to grab inside of the contentSelector element.
+      headingSelector: 'h2',
+      smoothScroll: false
+    });
+  }
+</script>
+</body>
+</html>

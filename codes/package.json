@@ -1,0 +1,17 @@
+{
+  "name": "codes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "mocha ./promise/promise_1.js --reporter doc | cat promise/head.html - promise/tail.html >  promise/result.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mocha": "^10.0.0",
+    "promises-aplus-tests": "^2.1.2"
+  }
+}
