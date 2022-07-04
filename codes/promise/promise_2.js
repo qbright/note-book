@@ -64,6 +64,7 @@ class MyPromise {
       !onRejectedFn ||
       Object.prototype.toString.call(onRejectedFn) !== "[object Function]"
     ) {
+      thenFn[2][2](this.rejectedReason);
     } else {
       queueMicrotask(() => {
         try {
@@ -92,6 +93,15 @@ class MyPromise {
       !onFulfilledFn ||
       Object.prototype.toString.call(onFulfilledFn) !== "[object Function]"
     ) {
+      thenFn[2][1](this.result);
+      // const onRejectedFn = thenFn[1];
+      // console.log(123);
+      // if (
+      //   onRejectedFn &&
+      //   Object.prototype.toString.call(onRejectedFn) === "[object Function]"
+      // ) {
+      //   onRejectedFn(`onFulfilled is $onFulfilledFn`);
+      // }
     } else {
       queueMicrotask(() => {
         try {
@@ -145,18 +155,22 @@ MyPromise.defer = MyPromise.deferred = function () {
   return dfd;
 };
 
-const p1 = new MyPromise((resolve, reject) => {
-  reject("promise1 reject");
-});
+// const p1 = new MyPromise((resolve, reject) => {
+//   resolve("promise1 reject");
+// });
 
-p1.then(
-  (val) => {
-    console.log(val);
-  },
-  (errorReason) => {
-    console.log("errorReason : " + errorReason);
-  }
-);
+// p1.then().then((val) => {
+//   console.log(val);
+// });
+
+// p1.then(
+//   (val) => {
+//     console.log(val);
+//   },
+//   (errorReason) => {
+//     console.log("errorReason : " + errorReason);
+//   }
+// );
 
 // const p3 = p1
 //   .then((val) => {
