@@ -12,8 +12,11 @@ class MyPromise {
 
     this.state = Promise_State.PENDING;
     this.thenSet = [];
-
-    executerFn(this._resolveFn.bind(this), this._rejectedFn.bind(this));
+    try {
+      executerFn(this._resolveFn.bind(this), this._rejectedFn.bind(this));
+    } catch (e) {
+      this._rejectedFn.call(this, e);
+    }
   }
 
   _resolveFn(result) {
@@ -22,18 +25,6 @@ class MyPromise {
       this.state = Promise_State.FULFILLED;
       this.result = result;
       this._tryRunThen();
-      // if (!this._onFulfilled || Object.prototype.toString.call(this._onFulfilled) !== "[object Function]") { // undefined, null,false
-      //   // return new MyPromise((resolve, rejected) => rejected(` onFulfilled`));
-      //   this._rejectedFn(`onFulfilled is ${this._onFulfilled}`);
-      // } else {
-      //   this.state = Promise_State.FULFILLED;
-      //   this.result = result;
-
-      //   queueMicrotask(() => {
-      //     this._onFulfilled(result); //处理返回值
-      //   });
-
-      // }
     }
   }
 
@@ -70,6 +61,7 @@ class MyPromise {
         try {
           const thenResult = onRejectedFn(this.rejectedReason);
           if (thenResult instanceof MyPromise) {
+            console.log(this === thenResult);
             thenResult.then(
               (result) => {
                 thenFn[2][1](result);
@@ -79,9 +71,11 @@ class MyPromise {
               }
             );
           } else {
-            thenFn[2][2](thenResult);
+            thenFn[2][1](thenResult);
           }
-        } catch (e) {}
+        } catch (e) {
+          thenFn[2][2](e);
+        }
       });
     }
   }
@@ -107,6 +101,8 @@ class MyPromise {
         try {
           const thenResult = onFulfilledFn(this.result);
           if (thenResult instanceof MyPromise) {
+            console.log(this, thenResult);
+
             thenResult.then(
               (result) => {
                 thenFn[2][1](result);
@@ -118,7 +114,9 @@ class MyPromise {
           } else {
             thenFn[2][1](thenResult);
           }
-        } catch (e) {}
+        } catch (e) {
+          thenFn[2][2](e);
+        }
       });
     }
   }
@@ -206,3 +204,15 @@ MyPromise.defer = MyPromise.deferred = function () {
 describe("Promises/A+ Tests", function () {
   promiseAplusTests.mocha(MyPromise);
 });
+
+// Promise.defer = Promise.deferred = function () {
+//   let dfd = {};
+//   dfd.promise = new Promise((resolve, reject) => {
+//     dfd.resolve = resolve;
+//     dfd.reject = reject;
+//   });
+//   return dfd;
+// };
+// describe("Promises/A+ Tests", function () {
+//   promiseAplusTests.mocha(Promise);
+// });
