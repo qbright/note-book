@@ -102,29 +102,30 @@ code .number { color: #2F6FAD }
   </head>
   <body>
     <ul id="menu"></ul>
-    <div id="content">    <section class="suite">
+    <div id="content">123 undefined
+    <section class="suite">
       <h1>Promises/A+ Tests</h1>
       <dl>
         <section class="suite">
           <h1>2.1.2.1: When fulfilled, a promise: must not transition to any other state.</h1>
           <dl>
             <dt>already-fulfilled</dt>
-            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
             <dd><pre><code>test(resolved(value), done);</code></pre></dd>
             <dt>immediately-fulfilled</dt>
-            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
             <dd><pre><code>var d = deferred();
 test(d.promise, done);
 d.resolve(value);</code></pre></dd>
             <dt>eventually-fulfilled</dt>
-            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
             <dd><pre><code>var d = deferred();
 test(d.promise, done);
 setTimeout(function () {
     d.resolve(value);
 }, 50);</code></pre></dd>
             <dt>trying to fulfill then immediately reject</dt>
-            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
             <dd><pre><code>var d = deferred();
 var onFulfilledCalled = false;
 d.promise.then(function onFulfilled() {
@@ -137,7 +138,7 @@ d.resolve(dummy);
 d.reject(dummy);
 setTimeout(done, 100);</code></pre></dd>
             <dt>trying to fulfill then reject, delayed</dt>
-            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
             <dd><pre><code>var d = deferred();
 var onFulfilledCalled = false;
 d.promise.then(function onFulfilled() {
@@ -152,7 +153,7 @@ setTimeout(function () {
 }, 50);
 setTimeout(done, 100);</code></pre></dd>
             <dt>trying to fulfill immediately then reject delayed</dt>
-            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
             <dd><pre><code>var d = deferred();
 var onFulfilledCalled = false;
 d.promise.then(function onFulfilled() {
@@ -172,26 +173,22 @@ setTimeout(done, 100);</code></pre></dd>
           <h1>2.1.3.1: When rejected, a promise: must not transition to any other state.</h1>
           <dl>
             <dt>already-rejected</dt>
-            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
             <dd><pre><code>test(rejected(reason), done);</code></pre></dd>
-            <dt class="error">already-rejected</dt>
-            <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
-            <dd class="error"><pre><code>test(rejected(reason), done);</code></pre></dd>
-            <dd class="error">Error: done() called multiple times in test &#x3C;Promises/A+ Tests 2.1.3.1: When rejected, a promise: must not transition to any other state. already-rejected&#x3E; of file /Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dd>
             <dt>immediately-rejected</dt>
-            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
             <dd><pre><code>var d = deferred();
 test(d.promise, done);
 d.reject(reason);</code></pre></dd>
             <dt>eventually-rejected</dt>
-            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
             <dd><pre><code>var d = deferred();
 test(d.promise, done);
 setTimeout(function () {
     d.reject(reason);
 }, 50);</code></pre></dd>
             <dt>trying to reject then immediately fulfill</dt>
-            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
             <dd><pre><code>var d = deferred();
 var onRejectedCalled = false;
 d.promise.then(function onFulfilled() {
@@ -204,7 +201,7 @@ d.reject(dummy);
 d.resolve(dummy);
 setTimeout(done, 100);</code></pre></dd>
             <dt>trying to reject then fulfill, delayed</dt>
-            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
             <dd><pre><code>var d = deferred();
 var onRejectedCalled = false;
 d.promise.then(function onFulfilled() {
@@ -219,7 +216,7 @@ setTimeout(function () {
 }, 50);
 setTimeout(done, 100);</code></pre></dd>
             <dt>trying to reject immediately then fulfill delayed</dt>
-            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+            <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
             <dd><pre><code>var d = deferred();
 var onRejectedCalled = false;
 d.promise.then(function onFulfilled() {
@@ -245,70 +242,70 @@ setTimeout(done, 100);</code></pre></dd>
                   <h1>applied to a directly-rejected promise</h1>
                   <dl>
                     <dt class="error">&#x60;onFulfilled&#x60; is &#x60;undefined&#x60;</dt>
-                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
                     <dd class="error"><pre><code>rejected(dummy).then(nonFunction, function () {
     done();
 });</code></pre></dd>
-                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js)</dd>
+                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
                     <dt class="error">&#x60;onFulfilled&#x60; is &#x60;null&#x60;</dt>
-                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
                     <dd class="error"><pre><code>rejected(dummy).then(nonFunction, function () {
     done();
 });</code></pre></dd>
-                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js)</dd>
+                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
                     <dt class="error">&#x60;onFulfilled&#x60; is &#x60;false&#x60;</dt>
-                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
                     <dd class="error"><pre><code>rejected(dummy).then(nonFunction, function () {
     done();
 });</code></pre></dd>
-                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js)</dd>
+                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
                     <dt class="error">&#x60;onFulfilled&#x60; is &#x60;5&#x60;</dt>
-                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
                     <dd class="error"><pre><code>rejected(dummy).then(nonFunction, function () {
     done();
 });</code></pre></dd>
-                    <dd class="error">TypeError: this.successFn.call is not a function</dd>
+                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
                     <dt class="error">&#x60;onFulfilled&#x60; is an object</dt>
-                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
                     <dd class="error"><pre><code>rejected(dummy).then(nonFunction, function () {
     done();
 });</code></pre></dd>
-                    <dd class="error">TypeError: this.successFn.call is not a function</dd>
+                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
                   </dl>
                 </section>
                 <section class="suite">
                   <h1>applied to a promise rejected and then chained off of</h1>
                   <dl>
                     <dt class="error">&#x60;onFulfilled&#x60; is &#x60;undefined&#x60;</dt>
-                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
                     <dd class="error"><pre><code>rejected(dummy).then(function () { }, undefined).then(nonFunction, function () {
     done();
 });</code></pre></dd>
-                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js)</dd>
+                    <dd class="error">TypeError: Cannot read property &#x27;then&#x27; of undefined</dd>
                     <dt class="error">&#x60;onFulfilled&#x60; is &#x60;null&#x60;</dt>
-                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
                     <dd class="error"><pre><code>rejected(dummy).then(function () { }, undefined).then(nonFunction, function () {
     done();
 });</code></pre></dd>
-                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js)</dd>
+                    <dd class="error">TypeError: Cannot read property &#x27;then&#x27; of undefined</dd>
                     <dt class="error">&#x60;onFulfilled&#x60; is &#x60;false&#x60;</dt>
-                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
                     <dd class="error"><pre><code>rejected(dummy).then(function () { }, undefined).then(nonFunction, function () {
     done();
 });</code></pre></dd>
-                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js)</dd>
+                    <dd class="error">TypeError: Cannot read property &#x27;then&#x27; of undefined</dd>
                     <dt class="error">&#x60;onFulfilled&#x60; is &#x60;5&#x60;</dt>
-                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
                     <dd class="error"><pre><code>rejected(dummy).then(function () { }, undefined).then(nonFunction, function () {
     done();
 });</code></pre></dd>
-                    <dd class="error">TypeError: this.successFn.call is not a function</dd>
+                    <dd class="error">TypeError: Cannot read property &#x27;then&#x27; of undefined</dd>
                     <dt class="error">&#x60;onFulfilled&#x60; is an object</dt>
-                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
                     <dd class="error"><pre><code>rejected(dummy).then(function () { }, undefined).then(nonFunction, function () {
     done();
 });</code></pre></dd>
-                    <dd class="error">TypeError: this.successFn.call is not a function</dd>
+                    <dd class="error">TypeError: Cannot read property &#x27;then&#x27; of undefined</dd>
                   </dl>
                 </section>
               </dl>
@@ -319,66 +316,71 @@ setTimeout(done, 100);</code></pre></dd>
                 <section class="suite">
                   <h1>applied to a directly-fulfilled promise</h1>
                   <dl>
-                    <dt>&#x60;onRejected&#x60; is &#x60;undefined&#x60;</dt>
-                    <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
-                    <dd><pre><code>resolved(dummy).then(function () {
+                    <dt class="error">&#x60;onRejected&#x60; is &#x60;undefined&#x60;</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                    <dd class="error"><pre><code>resolved(dummy).then(function () {
     done();
 }, nonFunction);</code></pre></dd>
-                    <dt>&#x60;onRejected&#x60; is &#x60;null&#x60;</dt>
-                    <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
-                    <dd><pre><code>resolved(dummy).then(function () {
+                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                    <dt class="error">&#x60;onRejected&#x60; is &#x60;null&#x60;</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                    <dd class="error"><pre><code>resolved(dummy).then(function () {
     done();
 }, nonFunction);</code></pre></dd>
-                    <dt>&#x60;onRejected&#x60; is &#x60;false&#x60;</dt>
-                    <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
-                    <dd><pre><code>resolved(dummy).then(function () {
+                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                    <dt class="error">&#x60;onRejected&#x60; is &#x60;false&#x60;</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                    <dd class="error"><pre><code>resolved(dummy).then(function () {
     done();
 }, nonFunction);</code></pre></dd>
-                    <dt>&#x60;onRejected&#x60; is &#x60;5&#x60;</dt>
-                    <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
-                    <dd><pre><code>resolved(dummy).then(function () {
+                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                    <dt class="error">&#x60;onRejected&#x60; is &#x60;5&#x60;</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                    <dd class="error"><pre><code>resolved(dummy).then(function () {
     done();
 }, nonFunction);</code></pre></dd>
-                    <dt>&#x60;onRejected&#x60; is an object</dt>
-                    <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
-                    <dd><pre><code>resolved(dummy).then(function () {
+                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                    <dt class="error">&#x60;onRejected&#x60; is an object</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                    <dd class="error"><pre><code>resolved(dummy).then(function () {
     done();
 }, nonFunction);</code></pre></dd>
+                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
                   </dl>
                 </section>
                 <section class="suite">
                   <h1>applied to a promise fulfilled and then chained off of</h1>
                   <dl>
                     <dt class="error">&#x60;onFulfilled&#x60; is &#x60;undefined&#x60;</dt>
-                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
                     <dd class="error"><pre><code>resolved(dummy).then(undefined, function () { }).then(function () {
     done();
 }, nonFunction);</code></pre></dd>
-                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js)</dd>
+                    <dd class="error">TypeError: Cannot read property &#x27;then&#x27; of undefined</dd>
                     <dt class="error">&#x60;onFulfilled&#x60; is &#x60;null&#x60;</dt>
-                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
                     <dd class="error"><pre><code>resolved(dummy).then(undefined, function () { }).then(function () {
     done();
 }, nonFunction);</code></pre></dd>
-                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js)</dd>
+                    <dd class="error">TypeError: Cannot read property &#x27;then&#x27; of undefined</dd>
                     <dt class="error">&#x60;onFulfilled&#x60; is &#x60;false&#x60;</dt>
-                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
                     <dd class="error"><pre><code>resolved(dummy).then(undefined, function () { }).then(function () {
     done();
 }, nonFunction);</code></pre></dd>
-                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js)</dd>
+                    <dd class="error">TypeError: Cannot read property &#x27;then&#x27; of undefined</dd>
                     <dt class="error">&#x60;onFulfilled&#x60; is &#x60;5&#x60;</dt>
-                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
                     <dd class="error"><pre><code>resolved(dummy).then(undefined, function () { }).then(function () {
     done();
 }, nonFunction);</code></pre></dd>
-                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js)</dd>
+                    <dd class="error">TypeError: Cannot read property &#x27;then&#x27; of undefined</dd>
                     <dt class="error">&#x60;onFulfilled&#x60; is an object</dt>
-                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                    <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
                     <dd class="error"><pre><code>resolved(dummy).then(undefined, function () { }).then(function () {
     done();
 }, nonFunction);</code></pre></dd>
-                    <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js)</dd>
+                    <dd class="error">TypeError: Cannot read property &#x27;then&#x27; of undefined</dd>
                   </dl>
                 </section>
               </dl>
@@ -391,29 +393,32 @@ setTimeout(done, 100);</code></pre></dd>
             <section class="suite">
               <h1>2.2.2.1: it must be called after &#x60;promise&#x60; is fulfilled, with &#x60;promise&#x60;&#x2019;s fulfillment value as its first argument.</h1>
               <dl>
-                <dt>already-fulfilled</dt>
-                <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
-                <dd><pre><code>test(resolved(value), done);</code></pre></dd>
-                <dt>immediately-fulfilled</dt>
-                <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
-                <dd><pre><code>var d = deferred();
+                <dt class="error">already-fulfilled</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>test(resolved(value), done);</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                <dt class="error">immediately-fulfilled</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>var d = deferred();
 test(d.promise, done);
 d.resolve(value);</code></pre></dd>
-                <dt>eventually-fulfilled</dt>
-                <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
-                <dd><pre><code>var d = deferred();
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                <dt class="error">eventually-fulfilled</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>var d = deferred();
 test(d.promise, done);
 setTimeout(function () {
     d.resolve(value);
 }, 50);</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
               </dl>
             </section>
             <section class="suite">
               <h1>2.2.2.2: it must not be called before &#x60;promise&#x60; is fulfilled</h1>
               <dl>
-                <dt>fulfilled after a delay</dt>
-                <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
-                <dd><pre><code>var d = deferred();
+                <dt class="error">fulfilled after a delay</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>var d = deferred();
 var isFulfilled = false;
 d.promise.then(function onFulfilled() {
     assert.strictEqual(isFulfilled, true);
@@ -423,8 +428,9 @@ setTimeout(function () {
     d.resolve(dummy);
     isFulfilled = true;
 }, 50);</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
                 <dt>never fulfilled</dt>
-                <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
                 <dd><pre><code>var d = deferred();
 var onFulfilledCalled = false;
 d.promise.then(function onFulfilled() {
@@ -440,16 +446,17 @@ setTimeout(function () {
             <section class="suite">
               <h1>2.2.2.3: it must not be called more than once.</h1>
               <dl>
-                <dt>already-fulfilled</dt>
-                <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
-                <dd><pre><code>var timesCalled = 0;
+                <dt class="error">already-fulfilled</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>var timesCalled = 0;
 resolved(dummy).then(function onFulfilled() {
     assert.strictEqual(++timesCalled, 1);
     done();
 });</code></pre></dd>
-                <dt>trying to fulfill a pending promise more than once, immediately</dt>
-                <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
-                <dd><pre><code>var d = deferred();
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                <dt class="error">trying to fulfill a pending promise more than once, immediately</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>var d = deferred();
 var timesCalled = 0;
 d.promise.then(function onFulfilled() {
     assert.strictEqual(++timesCalled, 1);
@@ -457,9 +464,10 @@ d.promise.then(function onFulfilled() {
 });
 d.resolve(dummy);
 d.resolve(dummy);</code></pre></dd>
-                <dt>trying to fulfill a pending promise more than once, delayed</dt>
-                <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
-                <dd><pre><code>var d = deferred();
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                <dt class="error">trying to fulfill a pending promise more than once, delayed</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>var d = deferred();
 var timesCalled = 0;
 d.promise.then(function onFulfilled() {
     assert.strictEqual(++timesCalled, 1);
@@ -469,9 +477,10 @@ setTimeout(function () {
     d.resolve(dummy);
     d.resolve(dummy);
 }, 50);</code></pre></dd>
-                <dt>trying to fulfill a pending promise more than once, immediately then delayed</dt>
-                <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
-                <dd><pre><code>var d = deferred();
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                <dt class="error">trying to fulfill a pending promise more than once, immediately then delayed</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>var d = deferred();
 var timesCalled = 0;
 d.promise.then(function onFulfilled() {
     assert.strictEqual(++timesCalled, 1);
@@ -481,9 +490,10 @@ d.resolve(dummy);
 setTimeout(function () {
     d.resolve(dummy);
 }, 50);</code></pre></dd>
-                <dt>when multiple &#x60;then&#x60; calls are made, spaced apart in time</dt>
-                <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
-                <dd><pre><code>var d = deferred();
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                <dt class="error">when multiple &#x60;then&#x60; calls are made, spaced apart in time</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>var d = deferred();
 var timesCalled = [0, 0, 0];
 d.promise.then(function onFulfilled() {
     assert.strictEqual(++timesCalled[0], 1);
@@ -502,20 +512,9 @@ setTimeout(function () {
 setTimeout(function () {
     d.resolve(dummy);
 }, 150);</code></pre></dd>
-                <dt>when &#x60;then&#x60; is interleaved with fulfillment</dt>
-                <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
-                <dd><pre><code>var d = deferred();
-var timesCalled = [0, 0];
-d.promise.then(function onFulfilled() {
-    assert.strictEqual(++timesCalled[0], 1);
-});
-d.resolve(dummy);
-d.promise.then(function onFulfilled() {
-    assert.strictEqual(++timesCalled[1], 1);
-    done();
-});</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
                 <dt class="error">when &#x60;then&#x60; is interleaved with fulfillment</dt>
-                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_1.js</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
                 <dd class="error"><pre><code>var d = deferred();
 var timesCalled = [0, 0];
 d.promise.then(function onFulfilled() {
@@ -526,49 +525,373 @@ d.promise.then(function onFulfilled() {
     assert.strictEqual(++timesCalled[1], 1);
     done();
 });</code></pre></dd>
-                <dd class="error">AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
-
-2 !== 1
-</dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
               </dl>
             </section>
           </dl>
         </section>
-      </dl>
-    </section>
-</div>
-<a href="http://github.com/visionmedia/superagent"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub"></a>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
-<script>
-  $('code').each(function(){
-    $(this).html(highlight($(this).text()));
-  });
-
-  function highlight(js) {
-    return js
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/('.*?')/gm, '<span class="string">$1</span>')
-      .replace(/(\d+\.\d+)/gm, '<span class="number">$1</span>')
-      .replace(/(\d+)/gm, '<span class="number">$1</span>')
-      .replace(/\bnew *(\w+)/gm, '<span class="keyword">new</span> <span class="init">$1</span>')
-      .replace(/\b(function|new|throw|return|var|if|else)\b/gm, '<span class="keyword">$1</span>')
-  }
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/3.0.0/tocbot.js"></script>
-<script>
-  // Only use tocbot for main docs, not test docs
-  if (document.querySelector('#superagent')) {
-    tocbot.init({
-      // Where to render the table of contents.
-      tocSelector: '#menu',
-      // Where to grab the headings to build the table of contents.
-      contentSelector: '#content',
-      // Which headings to grab inside of the contentSelector element.
-      headingSelector: 'h2',
-      smoothScroll: false
+        <section class="suite">
+          <h1>2.2.3: If &#x60;onRejected&#x60; is a function,</h1>
+          <dl>
+            <section class="suite">
+              <h1>2.2.3.1: it must be called after &#x60;promise&#x60; is rejected, with &#x60;promise&#x60;&#x2019;s rejection reason as its first argument.</h1>
+              <dl>
+                <dt class="error">already-rejected</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>test(rejected(reason), done);</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                <dt class="error">immediately-rejected</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>var d = deferred();
+test(d.promise, done);
+d.reject(reason);</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                <dt class="error">eventually-rejected</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>var d = deferred();
+test(d.promise, done);
+setTimeout(function () {
+    d.reject(reason);
+}, 50);</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+              </dl>
+            </section>
+            <section class="suite">
+              <h1>2.2.3.2: it must not be called before &#x60;promise&#x60; is rejected</h1>
+              <dl>
+                <dt class="error">rejected after a delay</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>var d = deferred();
+var isRejected = false;
+d.promise.then(null, function onRejected() {
+    assert.strictEqual(isRejected, true);
+    done();
+});
+setTimeout(function () {
+    d.reject(dummy);
+    isRejected = true;
+}, 50);</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                <dt>never rejected</dt>
+                <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd><pre><code>var d = deferred();
+var onRejectedCalled = false;
+d.promise.then(null, function onRejected() {
+    onRejectedCalled = true;
+    done();
+});
+setTimeout(function () {
+    assert.strictEqual(onRejectedCalled, false);
+    done();
+}, 150);</code></pre></dd>
+              </dl>
+            </section>
+            <section class="suite">
+              <h1>2.2.3.3: it must not be called more than once.</h1>
+              <dl>
+                <dt class="error">already-rejected</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>var timesCalled = 0;
+rejected(dummy).then(null, function onRejected() {
+    assert.strictEqual(++timesCalled, 1);
+    done();
+});</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                <dt class="error">trying to reject a pending promise more than once, immediately</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>var d = deferred();
+var timesCalled = 0;
+d.promise.then(null, function onRejected() {
+    assert.strictEqual(++timesCalled, 1);
+    done();
+});
+d.reject(dummy);
+d.reject(dummy);</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                <dt class="error">trying to reject a pending promise more than once, delayed</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>var d = deferred();
+var timesCalled = 0;
+d.promise.then(null, function onRejected() {
+    assert.strictEqual(++timesCalled, 1);
+    done();
+});
+setTimeout(function () {
+    d.reject(dummy);
+    d.reject(dummy);
+}, 50);</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                <dt class="error">trying to reject a pending promise more than once, immediately then delayed</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>var d = deferred();
+var timesCalled = 0;
+d.promise.then(null, function onRejected() {
+    assert.strictEqual(++timesCalled, 1);
+    done();
+});
+d.reject(dummy);
+setTimeout(function () {
+    d.reject(dummy);
+}, 50);</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                <dt class="error">when multiple &#x60;then&#x60; calls are made, spaced apart in time</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>var d = deferred();
+var timesCalled = [0, 0, 0];
+d.promise.then(null, function onRejected() {
+    assert.strictEqual(++timesCalled[0], 1);
+});
+setTimeout(function () {
+    d.promise.then(null, function onRejected() {
+        assert.strictEqual(++timesCalled[1], 1);
     });
-  }
-</script>
-</body>
-</html>
+}, 50);
+setTimeout(function () {
+    d.promise.then(null, function onRejected() {
+        assert.strictEqual(++timesCalled[2], 1);
+        done();
+    });
+}, 100);
+setTimeout(function () {
+    d.reject(dummy);
+}, 150);</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                <dt class="error">when &#x60;then&#x60; is interleaved with rejection</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>var d = deferred();
+var timesCalled = [0, 0];
+d.promise.then(null, function onRejected() {
+    assert.strictEqual(++timesCalled[0], 1);
+});
+d.reject(dummy);
+d.promise.then(null, function onRejected() {
+    assert.strictEqual(++timesCalled[1], 1);
+    done();
+});</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+              </dl>
+            </section>
+          </dl>
+        </section>
+        <section class="suite">
+          <h1>2.2.4: &#x60;onFulfilled&#x60; or &#x60;onRejected&#x60; must not be called until the execution context stack contains only platform code.</h1>
+          <dl>
+            <section class="suite">
+              <h1>&#x60;then&#x60; returns before the promise becomes fulfilled or rejected</h1>
+              <dl>
+                <dt class="error">already-fulfilled</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>test(resolved(value), done);</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                <dt class="error">immediately-fulfilled</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>var d = deferred();
+test(d.promise, done);
+d.resolve(value);</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                <dt class="error">eventually-fulfilled</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>var d = deferred();
+test(d.promise, done);
+setTimeout(function () {
+    d.resolve(value);
+}, 50);</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                <dt class="error">already-rejected</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>test(rejected(reason), done);</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                <dt class="error">immediately-rejected</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>var d = deferred();
+test(d.promise, done);
+d.reject(reason);</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                <dt class="error">eventually-rejected</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>var d = deferred();
+test(d.promise, done);
+setTimeout(function () {
+    d.reject(reason);
+}, 50);</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+              </dl>
+            </section>
+            <section class="suite">
+              <h1>Clean-stack execution ordering tests (fulfillment case)</h1>
+              <dl>
+                <dt>when &#x60;onFulfilled&#x60; is added immediately before the promise is fulfilled</dt>
+                <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd><pre><code>var d = deferred();
+var onFulfilledCalled = false;
+d.promise.then(function onFulfilled() {
+    onFulfilledCalled = true;
+});
+d.resolve(dummy);
+assert.strictEqual(onFulfilledCalled, false);</code></pre></dd>
+                <dt>when &#x60;onFulfilled&#x60; is added immediately after the promise is fulfilled</dt>
+                <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd><pre><code>var d = deferred();
+var onFulfilledCalled = false;
+d.resolve(dummy);
+d.promise.then(function onFulfilled() {
+    onFulfilledCalled = true;
+});
+assert.strictEqual(onFulfilledCalled, false);</code></pre></dd>
+                <dt class="error">when one &#x60;onFulfilled&#x60; is added inside another &#x60;onFulfilled&#x60;</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>var promise = resolved();
+var firstOnFulfilledFinished = false;
+promise.then(function () {
+    promise.then(function () {
+        assert.strictEqual(firstOnFulfilledFinished, true);
+        done();
+    });
+    firstOnFulfilledFinished = true;
+});</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                <dt class="error">when &#x60;onFulfilled&#x60; is added inside an &#x60;onRejected&#x60;</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>var promise = rejected();
+var promise2 = resolved();
+var firstOnRejectedFinished = false;
+promise.then(null, function () {
+    promise2.then(function () {
+        assert.strictEqual(firstOnRejectedFinished, true);
+        done();
+    });
+    firstOnRejectedFinished = true;
+});</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                <dt class="error">when the promise is fulfilled asynchronously</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>var d = deferred();
+var firstStackFinished = false;
+setTimeout(function () {
+    d.resolve(dummy);
+    firstStackFinished = true;
+}, 0);
+d.promise.then(function () {
+    assert.strictEqual(firstStackFinished, true);
+    done();
+});</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+              </dl>
+            </section>
+            <section class="suite">
+              <h1>Clean-stack execution ordering tests (rejection case)</h1>
+              <dl>
+                <dt>when &#x60;onRejected&#x60; is added immediately before the promise is rejected</dt>
+                <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd><pre><code>var d = deferred();
+var onRejectedCalled = false;
+d.promise.then(null, function onRejected() {
+    onRejectedCalled = true;
+});
+d.reject(dummy);
+assert.strictEqual(onRejectedCalled, false);</code></pre></dd>
+                <dt>when &#x60;onRejected&#x60; is added immediately after the promise is rejected</dt>
+                <dt>/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd><pre><code>var d = deferred();
+var onRejectedCalled = false;
+d.reject(dummy);
+d.promise.then(null, function onRejected() {
+    onRejectedCalled = true;
+});
+assert.strictEqual(onRejectedCalled, false);</code></pre></dd>
+                <dt class="error">when &#x60;onRejected&#x60; is added inside an &#x60;onFulfilled&#x60;</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>var promise = resolved();
+var promise2 = rejected();
+var firstOnFulfilledFinished = false;
+promise.then(function () {
+    promise2.then(null, function () {
+        assert.strictEqual(firstOnFulfilledFinished, true);
+        done();
+    });
+    firstOnFulfilledFinished = true;
+});</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                <dt class="error">when one &#x60;onRejected&#x60; is added inside another &#x60;onRejected&#x60;</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>var promise = rejected();
+var firstOnRejectedFinished = false;
+promise.then(null, function () {
+    promise.then(null, function () {
+        assert.strictEqual(firstOnRejectedFinished, true);
+        done();
+    });
+    firstOnRejectedFinished = true;
+});</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                <dt class="error">when the promise is rejected asynchronously</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>var d = deferred();
+var firstStackFinished = false;
+setTimeout(function () {
+    d.reject(dummy);
+    firstStackFinished = true;
+}, 0);
+d.promise.then(null, function () {
+    assert.strictEqual(firstStackFinished, true);
+    done();
+});</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+              </dl>
+            </section>
+          </dl>
+        </section>
+        <section class="suite">
+          <h1>2.2.5 &#x60;onFulfilled&#x60; and &#x60;onRejected&#x60; must be called as functions (i.e. with no &#x60;this&#x60; value).</h1>
+          <dl>
+            <section class="suite">
+              <h1>strict mode</h1>
+              <dl>
+                <dt class="error">fulfilled</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>resolved(dummy).then(function onFulfilled() {
+    &#x22;use strict&#x22;;
+    assert.strictEqual(this, undefined);
+    done();
+});</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                <dt class="error">rejected</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>rejected(dummy).then(null, function onRejected() {
+    &#x22;use strict&#x22;;
+    assert.strictEqual(this, undefined);
+    done();
+});</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+              </dl>
+            </section>
+            <section class="suite">
+              <h1>sloppy mode</h1>
+              <dl>
+                <dt class="error">fulfilled</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>resolved(dummy).then(function onFulfilled() {
+    assert.strictEqual(this, global);
+    done();
+});</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+                <dt class="error">rejected</dt>
+                <dt class="error">/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js</dt>
+                <dd class="error"><pre><code>rejected(dummy).then(null, function onRejected() {
+    assert.strictEqual(this, global);
+    done();
+});</code></pre></dd>
+                <dd class="error">Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure &#x22;done()&#x22; is called; if returning a Promise, ensure it resolves. (/Users/zhengqiguang/Work/private/note-book/codes/promise/promise_2.js)</dd>
+              </dl>
+            </section>
+          </dl>
+        </section>
+        <section class="suite">
+          <h1>2.2.6: &#x60;then&#x60; may be called multiple times on the same promise.</h1>
+          <dl>
+            <section class="suite">
+              <h1>2.2.6.1: If/when &#x60;promise&#x60; is fulfilled, all respective &#x60;onFulfilled&#x60; callbacks must execute in the order of their originating calls to &#x60;then&#x60;.</h1>
+              <dl>
+                <section class="suite">
+                  <h1>multiple boring fulfillment handlers</h1>
+                  <dl>

@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "mocha ./promise/promise_1.js --reporter doc | cat promise/head.html - promise/tail.html >  promise/result.html"
+    "test": "mocha ./promise/promise_2.js  --timeout 200 --reporter list"
   },
   "keywords": [],
   "author": "",
