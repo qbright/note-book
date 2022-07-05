@@ -91,7 +91,7 @@ class MyPromise {
                       const valThen = val.then;
                       if (typeOf(valThen) === "Function") {
                         try {
-                          valThen(thenFn[2][1]);
+                          valThen(thenFn[2][1], thenFn[2][2]);
                         } catch (e) {
                           thenFn[2][2](e);
                         }
@@ -107,7 +107,7 @@ class MyPromise {
                     ) {
                       const valThen = val.then;
                       if (typeOf(valThen) === "Function") {
-                        valThen(thenFn[2][2]);
+                        valThen(thenFn[2][1], thenFn[2][2]);
                         return;
                       }
                     }
@@ -171,7 +171,7 @@ class MyPromise {
 
                       if (typeOf(valThen) === "Function") {
                         try {
-                          valThen(thenFn[2][1]);
+                          valThen(thenFn[2][1], thenFn[2][2]);
                         } catch (e) {
                           thenFn[2][2](e);
                         }
@@ -187,7 +187,7 @@ class MyPromise {
                     ) {
                       const valThen = val.then;
                       if (typeOf(valThen) === "Function") {
-                        valThen(thenFn[2][2]);
+                        valThen(thenFn[2][1], thenFn[2][2]);
                         return;
                       }
                     }
