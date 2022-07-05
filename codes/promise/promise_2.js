@@ -50,10 +50,7 @@ class MyPromise {
   _runThenRejected(thenFn) {
     const onRejectedFn = thenFn[1];
 
-    if (
-      !onRejectedFn ||
-      Object.prototype.toString.call(onRejectedFn) !== "[object Function]"
-    ) {
+    if (!onRejectedFn || typeOf(onRejectedFn) !== "Function") {
       thenFn[2][2](this.rejectedReason);
     } else {
       queueMicrotask(() => {
@@ -73,6 +70,8 @@ class MyPromise {
               );
             }
           } else {
+            // if()
+
             thenFn[2][1](thenResult);
           }
         } catch (e) {
@@ -85,10 +84,7 @@ class MyPromise {
   _runThenFulfilled(thenFn) {
     const onFulfilledFn = thenFn[0];
 
-    if (
-      !onFulfilledFn ||
-      Object.prototype.toString.call(onFulfilledFn) !== "[object Function]"
-    ) {
+    if (!onFulfilledFn || typeOf(onFulfilledFn) !== "Function") {
       thenFn[2][1](this.result);
     } else {
       queueMicrotask(() => {
@@ -138,6 +134,11 @@ class MyPromise {
 
     // 判断 pending
   }
+}
+
+function typeOf(check) {
+  const type = Object.prototype.toString.call(check);
+  return type.match(/\[object\ (.*)\]/)[1];
 }
 
 MyPromise.defer = MyPromise.deferred = function () {
