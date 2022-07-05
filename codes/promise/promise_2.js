@@ -70,8 +70,16 @@ class MyPromise {
               );
             }
           } else {
-            // if()
-
+            if (
+              typeOf(thenResult) === "Object" ||
+              typeOf(thenResult) === "Function"
+            ) {
+              const thenFunction = thenResult.then;
+              if (typeOf(thenFunction) === "Function") {
+                thenFunction.call(thenResult, thenFn[2][1], thenFn[2][2]);
+                return;
+              }
+            }
             thenFn[2][1](thenResult);
           }
         } catch (e) {
@@ -104,6 +112,27 @@ class MyPromise {
               );
             }
           } else {
+            // 由于 test case 导致失败
+            // if (
+            //   (typeOf(thenResult) === "Object" ||
+            //     typeOf(thenResult) === "Function") &&
+            //   typeOf(thenResult.then) === "Function"
+            // ) {
+            //   thenResult.then(thenFn[2][1]);
+            // } else {
+            //   thenFn[2][1](thenResult);
+            // }
+
+            if (
+              typeOf(thenResult) === "Object" ||
+              typeOf(thenResult) === "Function"
+            ) {
+              const thenFunction = thenResult.then;
+              if (typeOf(thenFunction) === "Function") {
+                thenFunction.call(thenResult, thenFn[2][1], thenFn[2][2]);
+                return;
+              }
+            }
             thenFn[2][1](thenResult);
           }
         } catch (e) {
