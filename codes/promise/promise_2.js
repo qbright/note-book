@@ -20,7 +20,6 @@ class MyPromise {
   }
 
   _resolveFn(result) {
-    // console.log(0, result, this.state, this.id);
     if (this._checkStateCanChange()) {
       this.state = Promise_State.FULFILLED;
       this.result = result;
@@ -61,15 +60,18 @@ class MyPromise {
         try {
           const thenResult = onRejectedFn(this.rejectedReason);
           if (thenResult instanceof MyPromise) {
-            console.log(this === thenResult);
-            thenResult.then(
-              (result) => {
-                thenFn[2][1](result);
-              },
-              (errorReason) => {
-                thenFn[2][2](errorReason);
-              }
-            );
+            if (thenFn[2][0] === thenResult) {
+              thenFn[2][2](new TypeError());
+            } else {
+              thenResult.then(
+                (result) => {
+                  thenFn[2][1](result);
+                },
+                (errorReason) => {
+                  thenFn[2][2](errorReason);
+                }
+              );
+            }
           } else {
             thenFn[2][1](thenResult);
           }
@@ -88,29 +90,23 @@ class MyPromise {
       Object.prototype.toString.call(onFulfilledFn) !== "[object Function]"
     ) {
       thenFn[2][1](this.result);
-      // const onRejectedFn = thenFn[1];
-      // console.log(123);
-      // if (
-      //   onRejectedFn &&
-      //   Object.prototype.toString.call(onRejectedFn) === "[object Function]"
-      // ) {
-      //   onRejectedFn(`onFulfilled is $onFulfilledFn`);
-      // }
     } else {
       queueMicrotask(() => {
         try {
           const thenResult = onFulfilledFn(this.result);
           if (thenResult instanceof MyPromise) {
-            console.log(this, thenResult);
-
-            thenResult.then(
-              (result) => {
-                thenFn[2][1](result);
-              },
-              (errorReason) => {
-                thenFn[2][2](errorReason);
-              }
-            );
+            if (thenFn[2][0] === thenResult) {
+              thenFn[2][2](new TypeError());
+            } else {
+              thenResult.then(
+                (result) => {
+                  thenFn[2][1](result);
+                },
+                (errorReason) => {
+                  thenFn[2][2](errorReason);
+                }
+              );
+            }
           } else {
             thenFn[2][1](thenResult);
           }
@@ -153,66 +149,6 @@ MyPromise.defer = MyPromise.deferred = function () {
   return dfd;
 };
 
-// const p1 = new MyPromise((resolve, reject) => {
-//   resolve("promise1 reject");
-// });
-
-// p1.then().then((val) => {
-//   console.log(val);
-// });
-
-// p1.then(
-//   (val) => {
-//     console.log(val);
-//   },
-//   (errorReason) => {
-//     console.log("errorReason : " + errorReason);
-//   }
-// );
-
-// const p3 = p1
-//   .then((val) => {
-//     console.log(val + " " + 1);
-//     return 123;
-//   })
-//   .then((val) => {
-//     console.log("next val " + val);
-//     return new MyPromise((resolve, reject) => {
-//       resolve("other promise resolve");
-//     });
-//   })
-
-//   .then((val) => {
-//     console.log("next next val " + val);
-//     return "funk";
-//   });
-
-// p1.then((val) => {
-//   console.log(val + 2);
-//   return 345;
-//   // return new MyPromise(() => {});
-// });
-
-// p3.then((val) => {
-//   console.log("p3 : " + val);
-// });
-
-// p1.then((val) => {
-//   console.log(val + 3);
-// });
-
 describe("Promises/A+ Tests", function () {
   promiseAplusTests.mocha(MyPromise);
 });
-
-// Promise.defer = Promise.deferred = function () {
-//   let dfd = {};
-//   dfd.promise = new Promise((resolve, reject) => {
-//     dfd.resolve = resolve;
-//     dfd.reject = reject;
-//   });
-//   return dfd;
-// };
-// describe("Promises/A+ Tests", function () {
-//   promiseAplusTests.mocha(Promise);
-// });
