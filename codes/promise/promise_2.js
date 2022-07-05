@@ -23,7 +23,6 @@ class MyPromise {
     if (this._checkStateCanChange()) {
       this.state = Promise_State.FULFILLED;
       this.result = result;
-      console.log(this.result);
       this._tryRunThen();
     }
   }
@@ -84,9 +83,18 @@ class MyPromise {
                       typeOf(val) === "Object" ||
                       typeOf(val) === "Function"
                     ) {
+                      if (val instanceof MyPromise) {
+                        val.then(thenFn[2][1], thenFn[2][2]);
+                        return;
+                      }
+
                       const valThen = val.then;
                       if (typeOf(valThen) === "Function") {
-                        valThen(thenFn[2][1]);
+                        try {
+                          valThen(thenFn[2][1]);
+                        } catch (e) {
+                          thenFn[2][2](e);
+                        }
                         return;
                       }
                     }
@@ -155,9 +163,18 @@ class MyPromise {
                       typeOf(val) === "Object" ||
                       typeOf(val) === "Function"
                     ) {
+                      if (val instanceof MyPromise) {
+                        val.then(thenFn[2][1], thenFn[2][2]);
+                        return;
+                      }
                       const valThen = val.then;
+
                       if (typeOf(valThen) === "Function") {
-                        valThen(thenFn[2][1]);
+                        try {
+                          valThen(thenFn[2][1]);
+                        } catch (e) {
+                          thenFn[2][2](e);
+                        }
                         return;
                       }
                     }
