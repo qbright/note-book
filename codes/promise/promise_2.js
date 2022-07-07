@@ -26,7 +26,10 @@ class MyPromise {
 
       try {
         result.then(resolve, reject);
-      } catch (e) {}
+      } catch (e) {
+        //
+        reject(e);
+      }
       return;
     }
     if (typeOf(result) === "Object" || typeOf(result) === "Function") {
@@ -37,7 +40,10 @@ class MyPromise {
 
         try {
           thenFn(resolve, reject);
-        } catch (e) {}
+        } catch (e) {
+          //
+          reject(e);
+        }
         return;
       }
     }
@@ -60,6 +66,31 @@ class MyPromise {
   }
 
   _rejectedFn(rejectedReason) {
+    // if (rejectedReason instanceof MyPromise) {
+    //   const resolve = this._runOneTimeFunction(this._resolveFn.bind(this));
+    //   const reject = this._runOneTimeFunction(this._rejectedFn.bind(this));
+
+    //   try {
+    //     rejectedReason.then(resolve, reject);
+    //   } catch (e) {}
+    //   return;
+    // }
+    // if (
+    //   typeOf(rejectedReason) === "Object" ||
+    //   typeOf(rejectedReason) === "Function"
+    // ) {
+    //   const thenFn = rejectedReason.then;
+    //   if (typeOf(thenFn) === "Function") {
+    //     const resolve = this._runOneTimeFunction(this._resolveFn.bind(this));
+    //     const reject = this._runOneTimeFunction(this._rejectedFn.bind(this));
+
+    //     try {
+    //       thenFn(resolve, reject);
+    //     } catch (e) {}
+    //     return;
+    //   }
+    // }
+
     if (this._checkStateCanChange()) {
       this.state = Promise_State.REJECTED;
       this.rejectedReason = rejectedReason;
@@ -100,7 +131,10 @@ class MyPromise {
               });
               try {
                 thenResult.then(resolve, reject);
-              } catch (e) {}
+              } catch (e) {
+                //
+                reject(e);
+              }
             }
           } else {
             if (
@@ -124,7 +158,10 @@ class MyPromise {
                           const reject = this._runOneTimeFunction(thenFn[2][2]);
                           try {
                             val.then(resolve, reject);
-                          } catch (e) {}
+                          } catch (e) {
+                            //
+                            reject(e);
+                          }
                           return;
                         }
 
@@ -136,7 +173,10 @@ class MyPromise {
                           const reject = this._runOneTimeFunction(thenFn[2][2]);
                           try {
                             valThen(resolve, reject);
-                          } catch (e) {}
+                          } catch (e) {
+                            //
+                            reject(e);
+                          }
                           return;
                         }
                       }
@@ -155,7 +195,10 @@ class MyPromise {
                           const reject = this._runOneTimeFunction(thenFn[2][2]);
                           try {
                             valThen(resolve, reject);
-                          } catch (e) {}
+                          } catch (e) {
+                            //
+                            reject(e);
+                          }
                           return;
                         }
                       }
@@ -163,17 +206,19 @@ class MyPromise {
                       thenFn[2][2](val);
                     })
                   );
-                } catch (e) {}
+                } catch (e) {
+                  //
+                  reject(e);
+                }
 
                 return;
               }
             }
             thenFn[2][1](thenResult);
           }
-        } catch (e) { 
-          thenFn[2][2](e)
+        } catch (e) {
+          thenFn[2][2](e);
         }
-
       });
     }
   }
@@ -201,6 +246,8 @@ class MyPromise {
                 thenResult.then(resolve, reject);
               } catch (e) {
                 console.log("453453fdfd453");
+                //
+                reject(e);
               }
             }
           } else {
@@ -227,6 +274,7 @@ class MyPromise {
                             val.then(resolve, reject);
                           } catch (e) {
                             console.log("4534sdfsd53453");
+                            //
                             reject(e);
                           }
                           return;
@@ -242,6 +290,8 @@ class MyPromise {
                             valThen(resolve, reject);
                           } catch (e) {
                             console.log("45adfg3453453");
+                            //
+                            reject(e);
                           }
                           return;
                         }
@@ -263,6 +313,8 @@ class MyPromise {
                             valThen(resolve, reject);
                           } catch (e) {
                             console.log("dgdg453453453");
+                            //
+                            reject(e);
                           }
                           return;
                         }
@@ -272,6 +324,8 @@ class MyPromise {
                   );
                 } catch (e) {
                   console.log("da453453453");
+                  //
+                  reject(e);
                 }
                 return;
               }
