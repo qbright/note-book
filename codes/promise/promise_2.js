@@ -189,22 +189,29 @@ class MyPromise {
                           }
                           return;
                         }
+                        const [resolve, reject] = this._runBothOneTimeFunction(
+                          thenFn[2][1],
+                          thenFn[2][2]
+                        );
+
                         try {
                           const valThen = val.then;
                           if (typeOf(valThen) === "Function") {
-                            const resolve = this._runOneTimeFunction(
-                              thenFn[2][1]
-                            );
-                            const reject = this._runOneTimeFunction(
-                              thenFn[2][2]
-                            );
+                            // const resolve = this._runOneTimeFunction(
+                            //   thenFn[2][1]
+                            // );
+                            // const reject = this._runOneTimeFunction(
+                            //   thenFn[2][2]
+                            // );
+
                             valThen(resolve, reject);
 
                             return;
                           }
                         } catch (e) {
                           //
-                          thenFn[2][2](e);
+                          reject(e);
+                          // thenFn[2][2](e);
                           console.log("3412313", e);
                           ///
                           return;
@@ -351,15 +358,19 @@ class MyPromise {
                         typeOf(val) === "Object" ||
                         typeOf(val) === "Function"
                       ) {
+                        const [resolve, reject] = this._runBothOneTimeFunction(
+                          thenFn[2][1],
+                          thenFn[2][2]
+                        );
                         try {
                           const valThen = val.then;
                           if (typeOf(valThen) === "Function") {
-                            const resolve = this._runOneTimeFunction(
-                              thenFn[2][1]
-                            );
-                            const reject = this._runOneTimeFunction(
-                              thenFn[2][2]
-                            );
+                            // const resolve = this._runOneTimeFunction(
+                            //   thenFn[2][1]
+                            // );
+                            // const reject = this._runOneTimeFunction(
+                            //   thenFn[2][2]
+                            // );
 
                             valThen(resolve, reject);
 
@@ -368,6 +379,7 @@ class MyPromise {
                         } catch (e) {
                           console.log("dgdg453453453");
                           //
+                          reject(e);
                           thenFn[2][2](e);
                           ///
                           return;
@@ -440,7 +452,6 @@ function a(value) {
     c: c,
     then: function (onFulfilled) {
       setTimeout(() => {
-
         onFulfilled(value);
       });
     },
@@ -450,7 +461,6 @@ const other = { value: "other" };
 function d(value) {
   return {
     then: function (onFulfilled) {
-
       onFulfilled(value);
       throw other;
     },
