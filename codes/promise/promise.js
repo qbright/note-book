@@ -60,7 +60,6 @@ class MyPromise {
       getMutuallyExclusiveFn(resolveFn),
       getMutuallyExclusiveFn(rejectFn),
     ];
-
   }
 
   _rejectedFn(rejectedReason) {
@@ -84,48 +83,67 @@ class MyPromise {
     }
   }
 
-  _runThenWhenThenable(thenResult, resolve, reject) {
-    if (typeOf(thenResult) === "Object" || typeOf(thenResult) === "Function") {
-      const thenFunction = thenResult.then;
-      if (typeOf(thenFunction) === "Function") {
-        const [resolvePromise, rejectPromise] = this._runBothOneTimeFunction(
-          (result) => {
-            try {
-              if (result instanceof MyPromise) {
-                result.then(resolve, reject);
-                return;
-              }
+  _runThenWrap(onFn, fnVal, prevPromise, resolve, reject) {
+    this._runMicroTask(() => {
+      try {
+        const thenResult = onFn(fnVal);
+        if (thenResult instanceof MyPromise) {
+          if (prevPromise === thenResult) {
+            reject(new TypeError());
+          } else {
+            thenResult.then(resolve, reject);
+          }
+        } else {
+          if (
+            typeOf(thenResult) === "Object" ||
+            typeOf(thenResult) === "Function"
+          ) {
+            const thenFunction = thenResult.then;
+            if (typeOf(thenFunction) === "Function") {
+              const [resolvePromise, rejectPromise] =
+                this._runBothOneTimeFunction(
+                  (result) => {
+                    try {
+                      if (result instanceof MyPromise) {
+                        result.then(resolve, reject);
+                        return;
+                      }
 
-              if (
-                typeOf(result) === "Object" ||
-                typeOf(result) === "Function"
-              ) {
-                const thenFn = result.then;
-                if (typeOf(thenFn) === "Function") {
-                  thenFn(resolve, reject);
-                  return;
-                }
+                      if (
+                        typeOf(result) === "Object" ||
+                        typeOf(result) === "Function"
+                      ) {
+                        const thenFn = result.then;
+                        if (typeOf(thenFn) === "Function") {
+                          thenFn(resolve, reject);
+                          return;
+                        }
+                      }
+                    } catch (e) {
+                      reject(e);
+                      return;
+                    }
+                    resolve(result);
+                  },
+                  (errorReason) => {
+                    reject(errorReason);
+                  }
+                );
+
+              try {
+                thenFunction.call(thenResult, resolvePromise, rejectPromise);
+              } catch (e) {
+                rejectPromise(e);
               }
-            } catch (e) {
-              reject(e);
               return;
             }
-            resolve(result);
-          },
-          (errorReason) => {
-            reject(errorReason);
           }
-        );
-
-        try {
-          thenFunction.call(thenResult, resolvePromise, rejectPromise);
-        } catch (e) {
-          rejectPromise(e);
+          resolve(thenResult);
         }
-        return;
+      } catch (e) {
+        reject(e);
       }
-    }
-    resolve(thenResult);
+    });
   }
 
   _runThenRejected(thenFn) {
@@ -137,22 +155,13 @@ class MyPromise {
     if (!onRejectedFn || typeOf(onRejectedFn) !== "Function") {
       reject(this.rejectedReason);
     } else {
-      this._runMicroTask(() => {
-        try {
-          const thenResult = onRejectedFn(this.rejectedReason);
-          if (thenResult instanceof MyPromise) {
-            if (thenFn[2][0] === thenResult) {
-              reject(new TypeError());
-            } else {
-              thenResult.then(resolve, reject);
-            }
-          } else {
-            this._runThenWhenThenable(thenResult, resolve, reject);
-          }
-        } catch (e) {
-          reject(e);
-        }
-      });
+      this._runThenWrap(
+        onRejectedFn,
+        this.rejectedReason,
+        thenFn[2][0],
+        resolve,
+        reject
+      );
     }
   }
 
@@ -165,23 +174,13 @@ class MyPromise {
     if (!onFulfilledFn || typeOf(onFulfilledFn) !== "Function") {
       resolve(this.result);
     } else {
-      this._runMicroTask(() => {
-        try {
-          const thenResult = onFulfilledFn(this.result);
-
-          if (thenResult instanceof MyPromise) {
-            if (thenFn[2][0] === thenResult) {
-              reject(new TypeError());
-            } else {
-              thenResult.then(resolve, reject);
-            }
-          } else {
-            this._runThenWhenThenable(thenResult, resolve, reject);
-          }
-        } catch (e) {
-          reject(e);
-        }
-      });
+      this._runThenWrap(
+        onFulfilledFn,
+        this.result,
+        thenFn[2][0],
+        resolve,
+        reject
+      );
     }
   }
 
@@ -201,7 +200,6 @@ class MyPromise {
     });
     nextThen[0] = nextPromise;
     this.thenSet.push([onFulfilled, onRejected, nextThen]);
-
     this._runMicroTask(() => this._tryRunThen());
     return nextThen[0];
   }
@@ -212,6 +210,7 @@ function typeOf(check) {
   return type.match(/\[object\ (.*)\]/)[1];
 }
 
+///// end
 
 MyPromise.defer = MyPromise.deferred = function () {
   let dfd = {};
