@@ -6,10 +6,8 @@ const Promise_State = {
   REJECTED: "rejected",
 };
 
-class MyPromise1 {
+class MyPromise {
   constructor(executerFn) {
-    this.id = Math.random();
-
     this.state = Promise_State.PENDING;
     this.thenSet = [];
     try {
@@ -321,8 +319,6 @@ function typeOf(check) {
   const type = Object.prototype.toString.call(check);
   return type.match(/\[object\ (.*)\]/)[1];
 }
-const MyPromise = MyPromise1;
-// const MyPromise = Promise;
 MyPromise.defer = MyPromise.deferred = function () {
   let dfd = {};
   dfd.promise = new MyPromise((resolve, reject) => {
@@ -331,27 +327,6 @@ MyPromise.defer = MyPromise.deferred = function () {
   });
   return dfd;
 };
-
-const promise = new MyPromise((resolve) => resolve({ dummy: "dummy" }));
-const promise1 = promise.then(() => {
-  return (function () {
-    const d = MyPromise.deferred();
-    setTimeout(() => {
-      d.resolve({ sentinel: "sentinel" });
-    }, 50);
-
-    return {
-      then: function (resolvePromise) {
-        resolvePromise(d.promise);
-        throw other;
-      },
-    };
-  })();
-});
-console.log(promise1);
-promise1.then((value) => {
-  console.log("end", value);
-});
 
 describe("Promises/A+ Tests", function () {
   promiseAplusTests.mocha(MyPromise);
