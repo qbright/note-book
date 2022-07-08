@@ -224,10 +224,27 @@ class MyPromise {
                         typeOf(val) === "Object" ||
                         typeOf(val) === "Function"
                       ) {
+                        ///
                         const [resolve, reject] = this._runBothOneTimeFunction(
                           thenFn[2][1],
                           thenFn[2][2]
                         );
+                        if (val instanceof MyPromise) {
+                          // const resolve = this._runOneTimeFunction(
+                          //   thenFn[2][1]
+                          // );
+                          // const reject = this._runOneTimeFunction(thenFn[2][2]);
+
+                          try {
+                            val.then(resolve, reject);
+                          } catch (e) {
+                            //
+                            reject(e);
+                            console.log("ertwert", e);
+                          }
+                          return;
+                        }
+
                         try {
                           const valThen = val.then;
                           if (typeOf(valThen) === "Function") {
@@ -358,6 +375,23 @@ class MyPromise {
                         typeOf(val) === "Object" ||
                         typeOf(val) === "Function"
                       ) {
+                        ////new
+                        if (val instanceof MyPromise) {
+                          const resolve = this._runOneTimeFunction(
+                            thenFn[2][1]
+                          );
+                          const reject = this._runOneTimeFunction(thenFn[2][2]);
+                          try {
+                            val.then(resolve, reject);
+                          } catch (e) {
+                            console.log("4534sdfsd53453");
+                            //
+                            reject(e);
+                          }
+                          return;
+                        }
+                        ////
+
                         const [resolve, reject] = this._runBothOneTimeFunction(
                           thenFn[2][1],
                           thenFn[2][2]
@@ -420,7 +454,7 @@ class MyPromise {
     });
 
     nextThen[0] = nextPromise;
-
+    // console.trace(this, "fasfasfasdf");
     this.thenSet.push([onFulfilled, onRejected, nextThen]);
 
     queueMicrotask(() => this._tryRunThen());
