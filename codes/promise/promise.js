@@ -1,5 +1,4 @@
 import promiseAplusTests from "promises-aplus-tests";
-//  mocha ./promise/promise_2.js --reporter doc | cat promise/head.html - promise/tail.html >  promise/result.html
 const Promise_State = {
   PENDING: "pending",
   FULFILLED: "fulfilled",
@@ -18,37 +17,26 @@ class MyPromise {
   }
 
   _resolveFn(result) {
-    if (result instanceof MyPromise) {
-      const resolve = this._runOneTimeFunction(this._resolveFn.bind(this));
-      const reject = this._runOneTimeFunction(this._rejectedFn.bind(this));
+    const resolve = this._runOneTimeFunction(this._resolveFn.bind(this));
+    const reject = this._runOneTimeFunction(this._rejectedFn.bind(this));
 
-      try {
+    try {
+      if (result instanceof MyPromise) {
         result.then(resolve, reject);
-      } catch (e) {
-        reject(e);
-        //
+        return;
       }
-      return;
-    }
-    if (typeOf(result) === "Object" || typeOf(result) === "Function") {
-      try {
+
+      if (typeOf(result) === "Object" || typeOf(result) === "Function") {
         const thenFn = result.then;
         if (typeOf(thenFn) === "Function") {
-          const resolve = this._runOneTimeFunction(this._resolveFn.bind(this));
-          const reject = this._runOneTimeFunction(this._rejectedFn.bind(this));
-
           thenFn(resolve, reject);
           return;
         }
-      } catch (e) {
-        //
-
-        this._rejectedFn.call(this, e);
-        ///
-        return;
       }
+    } catch (e) {
+      reject(e);
+      return;
     }
-
     if (this._checkStateCanChange()) {
       this.state = Promise_State.FULFILLED;
       this.result = result;
@@ -107,27 +95,23 @@ class MyPromise {
   }
   _runThenRejected(thenFn) {
     const onRejectedFn = thenFn[1];
-
+    const [resolve, reject] = this._runBothOneTimeFunction(
+      thenFn[2][1],
+      thenFn[2][2]
+    );
     if (!onRejectedFn || typeOf(onRejectedFn) !== "Function") {
-      thenFn[2][2](this.rejectedReason);
+      reject(this.rejectedReason);
     } else {
       queueMicrotask(() => {
         try {
           const thenResult = onRejectedFn(this.rejectedReason);
           if (thenResult instanceof MyPromise) {
             if (thenFn[2][0] === thenResult) {
-              thenFn[2][2](new TypeError());
+              reject(new TypeError());
             } else {
-              const resolve = this._runOneTimeFunction((result) => {
-                thenFn[2][1](result);
-              });
-              const reject = this._runOneTimeFunction((errorReason) => {
-                thenFn[2][2](errorReason);
-              });
               try {
                 thenResult.then(resolve, reject);
               } catch (e) {
-                //
                 reject(e);
               }
             }
@@ -140,62 +124,47 @@ class MyPromise {
               if (typeOf(thenFunction) === "Function") {
                 const [resolvePromise, rejectPromise] =
                   this._runBothOneTimeFunction(
-                    (val) => {
-                      if (
-                        typeOf(val) === "Object" ||
-                        typeOf(val) === "Function"
-                      ) {
-                        if (val instanceof MyPromise) {
-                          const resolve = this._runOneTimeFunction(
-                            thenFn[2][1]
-                          );
-                          const reject = this._runOneTimeFunction(thenFn[2][2]);
-                          try {
-                            val.then(resolve, reject);
-                          } catch (e) {
-                            //
-                            reject(e);
-                          }
+                    (result) => {
+                      try {
+                        if (result instanceof MyPromise) {
+                          result.then(resolve, reject);
                           return;
                         }
-                        const [resolve, reject] = this._runBothOneTimeFunction(
-                          thenFn[2][1],
-                          thenFn[2][2]
-                        );
 
-                        try {
-                          const valThen = val.then;
-                          if (typeOf(valThen) === "Function") {
-                            valThen(resolve, reject);
+                        if (
+                          typeOf(result) === "Object" ||
+                          typeOf(result) === "Function"
+                        ) {
+                          const thenFn = result.then;
+                          if (typeOf(thenFn) === "Function") {
+                            thenFn(resolve, reject);
                             return;
                           }
-                        } catch (e) {
-                          reject(e);
-                          return;
                         }
+                      } catch (e) {
+                        reject(e);
+                        return;
                       }
-                      thenFn[2][1](val);
+                      resolve(result);
                     },
-                    (val) => {
-                      thenFn[2][2](val);
+                    (errorReason) => {
+                      reject(errorReason);
                     }
                   );
 
                 try {
                   thenFunction.call(thenResult, resolvePromise, rejectPromise);
                 } catch (e) {
-                  //
                   rejectPromise(e);
-                  // thenFn[2][2](e);
                 }
 
                 return;
               }
             }
-            thenFn[2][1](thenResult);
+            resolve(thenResult);
           }
         } catch (e) {
-          thenFn[2][2](e);
+          reject(e);
         }
       });
     }
@@ -213,12 +182,8 @@ class MyPromise {
             if (thenFn[2][0] === thenResult) {
               thenFn[2][2](new TypeError());
             } else {
-              const resolve = this._runOneTimeFunction((result) => {
-                thenFn[2][1](result);
-              });
-              const reject = this._runOneTimeFunction((errorReason) => {
-                thenFn[2][2](errorReason);
-              });
+              const resolve = this._runOneTimeFunction(thenFn[2][1]);
+              const reject = this._runOneTimeFunction(thenFn[2][2]);
               try {
                 thenResult.then(resolve, reject);
               } catch (e) {
@@ -298,7 +263,6 @@ class MyPromise {
   }
 
   then(onFulfilled, onRejected) {
-    // this._tryRunThen();
     const nextThen = [];
     const nextPromise = new MyPromise((resolve, reject) => {
       nextThen[1] = resolve;
@@ -310,8 +274,6 @@ class MyPromise {
 
     queueMicrotask(() => this._tryRunThen());
     return nextThen[0];
-
-    // 判断 pending
   }
 }
 
