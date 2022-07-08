@@ -17,9 +17,10 @@ class MyPromise {
   }
 
   _resolveFn(result) {
-    const resolve = this._runOneTimeFunction(this._resolveFn.bind(this));
-    const reject = this._runOneTimeFunction(this._rejectedFn.bind(this));
-
+    const [resolve, reject] = this._runBothOneTimeFunction(
+      this._resolveFn.bind(this),
+      this._rejectedFn.bind(this)
+    );
     try {
       if (result instanceof MyPromise) {
         result.then(resolve, reject);
@@ -44,33 +45,22 @@ class MyPromise {
     }
   }
 
-  _runOneTimeFunction(fn) {
-    let isRun = false;
-    return function (val) {
-      if (!isRun) {
-        isRun = true;
-        fn(val);
-      }
-    };
-  }
-
   _runBothOneTimeFunction(resolveFn, rejectFn) {
     let isRun = false;
-    return [
-      function (val) {
-        if (!isRun) {
-          isRun = true;
-          resolveFn(val);
-        }
-      },
 
-      function (val) {
+    function getMutuallyExclusiveFn(fn) {
+      return function (val) {
         if (!isRun) {
           isRun = true;
-          rejectFn(val);
+          fn(val);
         }
-      },
+      };
+    }
+    return [
+      getMutuallyExclusiveFn(resolveFn),
+      getMutuallyExclusiveFn(rejectFn),
     ];
+
   }
 
   _rejectedFn(rejectedReason) {
@@ -93,6 +83,51 @@ class MyPromise {
       }
     }
   }
+
+  _runThenWhenThenable(thenResult, resolve, reject) {
+    if (typeOf(thenResult) === "Object" || typeOf(thenResult) === "Function") {
+      const thenFunction = thenResult.then;
+      if (typeOf(thenFunction) === "Function") {
+        const [resolvePromise, rejectPromise] = this._runBothOneTimeFunction(
+          (result) => {
+            try {
+              if (result instanceof MyPromise) {
+                result.then(resolve, reject);
+                return;
+              }
+
+              if (
+                typeOf(result) === "Object" ||
+                typeOf(result) === "Function"
+              ) {
+                const thenFn = result.then;
+                if (typeOf(thenFn) === "Function") {
+                  thenFn(resolve, reject);
+                  return;
+                }
+              }
+            } catch (e) {
+              reject(e);
+              return;
+            }
+            resolve(result);
+          },
+          (errorReason) => {
+            reject(errorReason);
+          }
+        );
+
+        try {
+          thenFunction.call(thenResult, resolvePromise, rejectPromise);
+        } catch (e) {
+          rejectPromise(e);
+        }
+        return;
+      }
+    }
+    resolve(thenResult);
+  }
+
   _runThenRejected(thenFn) {
     const onRejectedFn = thenFn[1];
     const [resolve, reject] = this._runBothOneTimeFunction(
@@ -102,66 +137,17 @@ class MyPromise {
     if (!onRejectedFn || typeOf(onRejectedFn) !== "Function") {
       reject(this.rejectedReason);
     } else {
-      queueMicrotask(() => {
+      this._runMicroTask(() => {
         try {
           const thenResult = onRejectedFn(this.rejectedReason);
           if (thenResult instanceof MyPromise) {
             if (thenFn[2][0] === thenResult) {
               reject(new TypeError());
             } else {
-              try {
-                thenResult.then(resolve, reject);
-              } catch (e) {
-                reject(e);
-              }
+              thenResult.then(resolve, reject);
             }
           } else {
-            if (
-              typeOf(thenResult) === "Object" ||
-              typeOf(thenResult) === "Function"
-            ) {
-              const thenFunction = thenResult.then;
-              if (typeOf(thenFunction) === "Function") {
-                const [resolvePromise, rejectPromise] =
-                  this._runBothOneTimeFunction(
-                    (result) => {
-                      try {
-                        if (result instanceof MyPromise) {
-                          result.then(resolve, reject);
-                          return;
-                        }
-
-                        if (
-                          typeOf(result) === "Object" ||
-                          typeOf(result) === "Function"
-                        ) {
-                          const thenFn = result.then;
-                          if (typeOf(thenFn) === "Function") {
-                            thenFn(resolve, reject);
-                            return;
-                          }
-                        }
-                      } catch (e) {
-                        reject(e);
-                        return;
-                      }
-                      resolve(result);
-                    },
-                    (errorReason) => {
-                      reject(errorReason);
-                    }
-                  );
-
-                try {
-                  thenFunction.call(thenResult, resolvePromise, rejectPromise);
-                } catch (e) {
-                  rejectPromise(e);
-                }
-
-                return;
-              }
-            }
-            resolve(thenResult);
+            this._runThenWhenThenable(thenResult, resolve, reject);
           }
         } catch (e) {
           reject(e);
@@ -172,90 +158,35 @@ class MyPromise {
 
   _runThenFulfilled(thenFn) {
     const onFulfilledFn = thenFn[0];
+    const [resolve, reject] = this._runBothOneTimeFunction(
+      thenFn[2][1],
+      thenFn[2][2]
+    );
     if (!onFulfilledFn || typeOf(onFulfilledFn) !== "Function") {
-      thenFn[2][1](this.result);
+      resolve(this.result);
     } else {
-      queueMicrotask(() => {
+      this._runMicroTask(() => {
         try {
           const thenResult = onFulfilledFn(this.result);
+
           if (thenResult instanceof MyPromise) {
             if (thenFn[2][0] === thenResult) {
-              thenFn[2][2](new TypeError());
+              reject(new TypeError());
             } else {
-              const resolve = this._runOneTimeFunction(thenFn[2][1]);
-              const reject = this._runOneTimeFunction(thenFn[2][2]);
-              try {
-                thenResult.then(resolve, reject);
-              } catch (e) {
-                //
-                reject(e);
-              }
+              thenResult.then(resolve, reject);
             }
           } else {
-            if (
-              typeOf(thenResult) === "Object" ||
-              typeOf(thenResult) === "Function"
-            ) {
-              const thenFunction = thenResult.then;
-              if (typeOf(thenFunction) === "Function") {
-                const [resolvePromise, rejectPromise] =
-                  this._runBothOneTimeFunction(
-                    (val) => {
-                      if (
-                        typeOf(val) === "Object" ||
-                        typeOf(val) === "Function"
-                      ) {
-                        if (val instanceof MyPromise) {
-                          const resolve = this._runOneTimeFunction(
-                            thenFn[2][1]
-                          );
-                          const reject = this._runOneTimeFunction(thenFn[2][2]);
-                          try {
-                            val.then(resolve, reject);
-                          } catch (e) {
-                            //
-                            reject(e);
-                          }
-                          return;
-                        }
-                        const [resolve, reject] = this._runBothOneTimeFunction(
-                          thenFn[2][1],
-                          thenFn[2][2]
-                        );
-                        try {
-                          const valThen = val.then;
-
-                          if (typeOf(valThen) === "Function") {
-                            valThen(resolve, reject);
-
-                            return;
-                          }
-                        } catch (e) {
-                          reject(e);
-                          return;
-                        }
-                      }
-                      thenFn[2][1](val);
-                    },
-                    (val) => {
-                      thenFn[2][2](val);
-                    }
-                  );
-                try {
-                  thenFunction.call(thenResult, resolvePromise, rejectPromise);
-                } catch (e) {
-                  rejectPromise(e);
-                }
-                return;
-              }
-            }
-            thenFn[2][1](thenResult);
+            this._runThenWhenThenable(thenResult, resolve, reject);
           }
         } catch (e) {
-          thenFn[2][2](e);
+          reject(e);
         }
       });
     }
+  }
+
+  _runMicroTask(fn) {
+    queueMicrotask(fn);
   }
 
   _checkStateCanChange() {
@@ -268,11 +199,10 @@ class MyPromise {
       nextThen[1] = resolve;
       nextThen[2] = reject;
     });
-
     nextThen[0] = nextPromise;
     this.thenSet.push([onFulfilled, onRejected, nextThen]);
 
-    queueMicrotask(() => this._tryRunThen());
+    this._runMicroTask(() => this._tryRunThen());
     return nextThen[0];
   }
 }
@@ -281,6 +211,8 @@ function typeOf(check) {
   const type = Object.prototype.toString.call(check);
   return type.match(/\[object\ (.*)\]/)[1];
 }
+
+
 MyPromise.defer = MyPromise.deferred = function () {
   let dfd = {};
   dfd.promise = new MyPromise((resolve, reject) => {
