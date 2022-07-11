@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "mocha ./promise/promise.js  --timeout 200 ",
-    "test_doc": "mocha ./promise/promise.js --reporter doc --timeout 200 | cat promise/head.html - promise/tail.html >  promise/result.html"
+    "test_doc": "mocha ./promise/promise.js --reporter doc --timeout 200 | cat promise/head.html - promise/tail.html >  promise/result.html",
+    "test_api": "node ./promise/promise_static_api.js"
   },
   "keywords": [],
   "author": "",
