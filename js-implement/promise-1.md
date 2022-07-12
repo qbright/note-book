@@ -96,4 +96,11 @@ date: 2022-07-11 16:46:13
 
 这里面最复杂的就是在 `resolvePromise` 被调用，`value`是`y` 这部分,实现的是`thenable` 的递归函数
 
-上面就是如何实现一个"完美"的 Promise 的规范了,总的来说比较复杂的是在`The Promise Resolution Procedure` 和对于错误和调用边界的情况，下一篇我们将开始动手,实现一个"完美"的Promise
+上面就是如何实现一个"完美"的 Promise 的规范了,总的来说比较复杂的是在`The Promise Resolution Procedure` 和对于错误和调用边界的情况，下面我们将开始动手,实现一个"完美"的Promise
+
+## 如何测试你的 Promise
+前面介绍了 `Promise/A+`规范, 那么如何测试你的实现是完全实现了规范的呢, 这里`Promise/A+` 提供了 [promises-tests
+](https://github.com/promises-aplus/promises-tests), 里面目前包含872个测试用例,用于测试 Promise 是否标准
+
+## 开始
+

@@ -23,6 +23,7 @@ class MyPromise {
     );
     try {
       if (result instanceof MyPromise) {
+        // 2.3.2
         result.then(resolve, reject);
         return;
       }
@@ -30,6 +31,7 @@ class MyPromise {
       if (typeOf(result) === "Object" || typeOf(result) === "Function") {
         const thenFn = result.then;
         if (typeOf(thenFn) === "Function") {
+          // 2.3.3.3.1
           thenFn(resolve, reject);
           return;
         }
@@ -38,6 +40,7 @@ class MyPromise {
       reject(e);
       return;
     }
+    // 2.1.2
     if (this._checkStateCanChange()) {
       this.state = Promise_State.FULFILLED;
       this.result = result;
@@ -45,6 +48,7 @@ class MyPromise {
     }
   }
 
+  //get resolve/reject function only run once
   _runBothOneTimeFunction(resolveFn, rejectFn) {
     let isRun = false;
 
@@ -63,6 +67,7 @@ class MyPromise {
   }
 
   _rejectedFn(rejectedReason) {
+    //2.1.3
     if (this._checkStateCanChange()) {
       this.state = Promise_State.REJECTED;
       this.rejectedReason = rejectedReason;
@@ -72,6 +77,7 @@ class MyPromise {
 
   _tryRunThen() {
     if (this.state !== Promise_State.PENDING) {
+      //2.2.6
       while (this.thenSet.length) {
         const thenFn = this.thenSet.shift();
         if (this.state === Promise_State.FULFILLED) {
@@ -89,15 +95,19 @@ class MyPromise {
         const thenResult = onFn(fnVal);
         if (thenResult instanceof MyPromise) {
           if (prevPromise === thenResult) {
+            //2.3.1
             reject(new TypeError());
           } else {
+            //2.3.2
             thenResult.then(resolve, reject);
           }
         } else {
+          //2.3.3
           if (
             typeOf(thenResult) === "Object" ||
             typeOf(thenResult) === "Function"
           ) {
+            //2.3.3.1
             const thenFunction = thenResult.then;
             if (typeOf(thenFunction) === "Function") {
               const [resolvePromise, rejectPromise] =
@@ -114,7 +124,9 @@ class MyPromise {
                         typeOf(result) === "Function"
                       ) {
                         const thenFn = result.then;
+                        //check is thenable
                         if (typeOf(thenFn) === "Function") {
+                          // 2.3.3.3.1
                           thenFn(resolve, reject);
                           return;
                         }
@@ -133,11 +145,14 @@ class MyPromise {
               try {
                 thenFunction.call(thenResult, resolvePromise, rejectPromise);
               } catch (e) {
+                //2.3.3.2
                 rejectPromise(e);
               }
               return;
             }
           }
+          // 2.3.3.4
+          // 2.3.4
           resolve(thenResult);
         }
       } catch (e) {
@@ -153,6 +168,7 @@ class MyPromise {
       thenFn[2][2]
     );
     if (!onRejectedFn || typeOf(onRejectedFn) !== "Function") {
+      // 2.2.74
       reject(this.rejectedReason);
     } else {
       this._runThenWrap(
@@ -172,6 +188,7 @@ class MyPromise {
       thenFn[2][2]
     );
     if (!onFulfilledFn || typeOf(onFulfilledFn) !== "Function") {
+      // 2.2.73
       resolve(this.result);
     } else {
       this._runThenWrap(
@@ -185,10 +202,12 @@ class MyPromise {
   }
 
   _runMicroTask(fn) {
+    // 2.2.4
     queueMicrotask(fn);
   }
 
   _checkStateCanChange() {
+    //2.1.1
     return this.state === Promise_State.PENDING;
   }
 
@@ -199,6 +218,8 @@ class MyPromise {
       nextThen[2] = reject;
     });
     nextThen[0] = nextPromise;
+
+    //2.2.6
     this.thenSet.push([onFulfilled, onRejected, nextThen]);
     this._runMicroTask(() => this._tryRunThen());
     return nextThen[0];
