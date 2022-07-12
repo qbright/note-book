@@ -223,6 +223,6 @@ MyPromise.defer = MyPromise.deferred = function () {
 
 export default MyPromise;
 
-// describe("Promises/A+ Tests", function () {
-//   promiseAplusTests.mocha(MyPromise);
-// });
+describe("Promises/A+ Tests", function () {
+  promiseAplusTests.mocha(MyPromise);
+});
