@@ -1,5 +1,5 @@
 ---
-title: 『你写的Promise, 是完美的吗?』 —— 规范篇
+title: 『你写的Promise, 是完美的吗?』
 tags: [js-implement,promise]
 date: 2022-07-11 16:46:13
 ---
