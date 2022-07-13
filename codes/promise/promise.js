@@ -21,23 +21,7 @@ class MyPromise {
       this._resolveFn.bind(this),
       this._rejectedFn.bind(this)
     );
-    try {
-      if (result instanceof MyPromise) {
-        // 2.3.2
-        result.then(resolve, reject);
-        return;
-      }
-
-      if (typeOf(result) === "Object" || typeOf(result) === "Function") {
-        const thenFn = result.then;
-        if (typeOf(thenFn) === "Function") {
-          // 2.3.3.3.1
-          thenFn(resolve, reject);
-          return;
-        }
-      }
-    } catch (e) {
-      reject(e);
+    if (this._thenableResolve(result, resolve, reject)) {
       return;
     }
     // 2.1.2
@@ -89,6 +73,29 @@ class MyPromise {
     }
   }
 
+  _thenableResolve(result, resolve, reject) {
+    try {
+      if (result instanceof MyPromise) {
+        // 2.3.2
+        result.then(resolve, reject);
+        return true;
+      }
+
+      if (typeOf(result) === "Object" || typeOf(result) === "Function") {
+        const thenFn = result.then;
+        if (typeOf(thenFn) === "Function") {
+          // 2.3.3.3
+          thenFn(resolve, reject);
+          return true;
+        }
+      }
+    } catch (e) {
+      //2.3.3.3.4
+      reject(e);
+      return true;
+    }
+  }
+
   _runThenWrap(onFn, fnVal, prevPromise, resolve, reject) {
     this._runMicroTask(() => {
       try {
@@ -113,29 +120,9 @@ class MyPromise {
               const [resolvePromise, rejectPromise] =
                 this._runBothOneTimeFunction(
                   (result) => {
-                    try {
-                      if (result instanceof MyPromise) {
-                        result.then(resolve, reject);
-                        return;
-                      }
-
-                      if (
-                        typeOf(result) === "Object" ||
-                        typeOf(result) === "Function"
-                      ) {
-                        const thenFn = result.then;
-                        //check is thenable
-                        if (typeOf(thenFn) === "Function") {
-                          // 2.3.3.3.1
-                          thenFn(resolve, reject);
-                          return;
-                        }
-                      }
-                    } catch (e) {
-                      reject(e);
-                      return;
+                    if (!this._thenableResolve(result, resolve, reject)) {
+                      resolve(result);
                     }
-                    resolve(result);
                   },
                   (errorReason) => {
                     reject(errorReason);
