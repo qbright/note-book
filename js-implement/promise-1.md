@@ -105,18 +105,23 @@ date: 2022-07-11 16:46:13
 
 ## 正文开始
 
-首先说明下这边是按照已完成的代码对实现 promise 进行介绍代码在[这里](https://github.com/qbright/note-book/blob/15a8f5d8d2da033cb23549435a13ffe46dbf1e5e/codes/promise/promise.js), 这里使用的是最终版本，里面注释大致标明了实现的规则编号，其实整体来说经过了很多修改，如果要看整个便携过程，可以[commit history](https://github.com/qbright/note-book/commits/main/codes/promise), 关注`promise_2.js` 和`promise.js` 两个文件
+首先说明下这边是按照已完成的代码对实现 promise 进行介绍代码在[这里](https://github.com/qbright/note-book/blob/b177e8c498dd9e197002c696f753f3926a834c9e/codes/promise/promise.js), 这里使用的是最终版本，里面注释大致标明了实现的规则编号，其实整体来说经过了很多修改，如果要看整个便携过程，可以[commit history](https://github.com/qbright/note-book/commits/main/codes/promise), 关注`promise_2.js` 和`promise.js` 两个文件
 
 ### 编写的关键点
 
 整体的实现思路主要就是上面的规范了，当然我们也不是说逐条进行实现，而是对规范进行分类，统一去实现:
 
-* [`promise`的状态定义及转变规则和基础运行](#promise的状态定义及转变规则和基础运行)
-* [`then`的实现](#then的实现)
-* [`onFulfilled/onRejected`的执行及执行时机](#onFulfilled和onRejected的执行及执行时机)
-* [`thenable`的处理](#thenable的处理)
-* `promise/then/thenable`  中对于错误的处理
-* `resolvePromise/rejectPromise`的执行次数
+* [promise的状态定义及转变规则和基础运行](#promise的状态定义及转变规则和基础运行)
+
+* [then的实现](#then的实现)
+
+* [onFulfilled和onRejected的执行及执行时机](#onfulfilled和onrejected的执行及执行时机)
+
+* [thenable的处理](#thenable的处理)
+
+* [promise和then及thenable中对于错误的处理](#promise和then及thenable中对于错误的处理)
+
+* [`resolve`和`reject` 函数的调用次数问题](#resolve和reject函数的调用次数问题)
 
 #### promise的状态定义及转变规则和基础运行
 
@@ -364,4 +369,181 @@ p.then((value)=>{
 
 ```
 
-可以看到 需要判断是否是一个`Object`或者`Function`,然后再判断`thenResult.then` 是不是个 `Function`
+可以看到 需要判断是否是一个`Object`或者`Function`,然后再判断`thenResult.then` 是不是个 `Function`,那么有人会问，能不能写成这样子
+
+``` javascript
+   if (
+      (typeOf(thenResult) === "Object" ||
+      typeOf(thenResult) === "Function") && (typeOf(thenResult.then) === 'Function')
+    ) {
+        // is thenable
+    }
+
+```
+
+刚开始我也是这么写的，然后发现测试用例跑不过，最后去看了规范，有这么一段[3.5](https://promisesaplus.com/#point-75)
+
+简单来说就是为了保证测试和调用的一致性，先把`thenResult.then`进行存储再判断和运行是有必要的，多次访问属性可能会返回不同的值
+
+接下去就是`thenable`的处理逻辑了
+简单来说`thenable` 的处理逻辑有两种情况
+
+* 在 promise 的 `then` 或者 `resolve` 中处理 `thenable` 的情况
+* 在 `thenable`的`then`回调中处理`value` 还是`thenable`的情况
+
+这里用在 promise 的`then`的`thenable`调用进行讲述:
+
+``` javascript
+
+
+    _thenableResolve(result, resolve, reject) {
+      try {
+        if (result instanceof MyPromise) {
+          // 2.3.2
+          result.then(resolve, reject);
+          return true;
+        }
+
+        if (typeOf(result) === "Object" || typeOf(result) === "Function") {
+          const thenFn = result.then;
+          if (typeOf(thenFn) === "Function") {
+            // 2.3.3.3
+            thenFn(resolve, reject);
+            return true;
+          }
+        }
+      } catch (e) {
+        //2.3.3.3.4
+        reject(e);
+        return true;
+      }
+    }
+
+    const [resolvePromise, rejectPromise] =
+          this._runBothOneTimeFunction(
+            (result) => {
+              if (!this._thenableResolve(result, resolve, reject)) {
+                resolve(result);
+              }
+            },
+            (errorReason) => {
+              reject(errorReason);
+            }
+          );
+
+    try {
+      thenFunction.call(thenResult, resolvePromise, rejectPromise);
+    } catch (e) {
+      //2.3.3.2
+      rejectPromise(e);
+    }
+
+
+```
+
+这里我们构造了`resolvePromise`和`rejectPromise`,然后调用 `thenFunction`, 在函数逻辑中处理完成之后将会调用`resolvePromise`或者`rejectPromise`, 这时候如果`result`是一个 `thenable`,那么就会继续传递下去，直到不是`thenable`,调用`resolve`或者`reject`
+
+我们要注意的是 promise 的`then`方法和`thenable` 的`then`方法是有不同的地方的
+
+* promise 的`then`有两个参数，一个是`fulfilled`,一个是`rejected`,在前面的 promise状态改变之后会回调对应的函数
+* `thenable`的`then` 也有两个参数，这两个参数是提供给`thenable` 调用完成进行回调的`resolve`和`reject` 方法，如果 `thenable` 的回调值还是一个`thenable`,那么会按照这个逻辑调用下去，直到是一个非`thenable`,就会调用离`thenable`往上回溯最近的一个 promies 的`resolve` 或者`reject`
+
+ 到这里，我们的promise 已经可以支持`thenable`的运行
+
+ ``` javascript
+
+  new MyPromise((resolve)=>{
+    resolve({
+      then:(onFulfilled,onRejected)=>{
+        console.log('do something');
+        onFulfilled('hello');
+      }
+    })
+  }).then((result)=>{
+
+    return {
+      then:(onFulfilled,onRejected)=>{
+        onRejected('world');
+      }
+    }
+  });
+
+
+ ```
+
+#### promise和then及thenable中对于错误的处理
+
+错误处理指的是在运行过程中出现的错误要进行捕获处理,基本上使用 `try/catch` 在捕获到错误之后调用 `reject` 回调，这部分比较简单，可以直接看代码
+
+#### resolve和reject函数的调用次数问题
+
+一个 promise 中的`resolve`和`reject`调用可以说是互斥而且唯一的，就是这两个函数只能有一个被调用,而且调用一次，这个说起来比较简单,但是和错误场景在一起的时候，就会有一定的复杂性
+本来可能是这样子的
+
+``` javascript
+if(something true){
+  resolve();
+}else {
+  reject();
+}
+
+```
+
+加上错误场景之后
+
+``` javascript
+try{
+  if(something true){
+    resolve();
+    throw "some error";
+  }else {
+    reject();
+  }
+}catch(e){
+  reject(e);
+}
+```
+
+这时候判断就会无效了, 因此我们按照通过一个工具类来包装出两个互斥的函数,来达到目的
+
+```  javascript
+  _runBothOneTimeFunction(resolveFn, rejectFn) {
+    let isRun = false;
+
+    function getMutuallyExclusiveFn(fn) {
+      return function (val) {
+        if (!isRun) {
+          isRun = true;
+          fn(val);
+        }
+      };
+    }
+    return [
+      getMutuallyExclusiveFn(resolveFn),
+      getMutuallyExclusiveFn(rejectFn),
+    ];
+  }
+
+```
+
+至此，我们一个完全符合`Promise/A+` 标准的 Promise，就完成了, 完整代码在[这里](https://github.com/qbright/note-book/blob/b177e8c498dd9e197002c696f753f3926a834c9e/codes/promise/promise.js)
+
+## 等等，是不是少了些什么
+
+有人看到这里会说，这就完了吗？
+我经常使用的`catch`、`finally`,还有静态方法`Promise.resolve`、`Promise.reject`、`Promise.all/race/any/allSettled`方法呢？
+
+其实从标准来说,`Promise/A+`的标准就是前面讲述的部分，只定义了`then`方法,而我们日常使用的其他方法，其实也都是在`then` 方法上面去派生的，比如`catch` 方法
+
+``` javascript
+ MyPromise.prototype.catch = function (catchFn) {
+  return this.then(null, catchFn);
+};
+```
+
+具体的方法其实也实现了，具体可以看[promise_api](https://github.com/qbright/note-book/blob/b177e8c498dd9e197002c696f753f3926a834c9e/codes/promise/promise_static_api.js)
+
+## 最后
+
+最后是想分享下这次这个 promise 编写的过程，从上面的讲述看似很顺利，但是其实在编写的时候，我基本上是简单了过了以下标准，然后按照自己的理解，结合`promises-tests`单元测试用例来编写的，这种开发模式其实就是[TDD(测试驱动开发 (Test-driven development))](https://en.wikipedia.org/wiki/Test-driven_development),这种开发模式会大大减轻发人员编程时候对于边界场景没有覆盖的心智负担，但是反过来，对于测试用例的便携质量要求就很高了
+总体来说这次便携 promise 是一个比较有趣的过程，上面如果有什么问题的，欢迎留言多多交流
