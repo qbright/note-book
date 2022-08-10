@@ -21,7 +21,6 @@ js是词法作用域，也叫做静态作用域,前面说过 js 有以下作用�
 
 简单来说js的词法作用域就是在 js 进行语法词法分析的时候就确定的作用域 , 这里面就涉及到前面文章说过的`变量提升`等概念了
 
-
 ## 关键的 this
 
 this 关键字在 js 编程中经常被使用，而且因为在不同场景下表现存在差异，很容易出现 bug , 所以我们来讨论下
@@ -162,6 +161,33 @@ function foo() {
 foo.bind({a:1}).call({a:2}); // print 1
 ```
 
-## 相关问题
-
 ### 手写一个 bind
+
+通过重写`Function.prototype.bind`就可以重写 `bind`, 通过封装调用 `apply`来实现
+
+``` javascript
+Function.prototype.bind = function (thisContext, ...oargs) {
+  const fn = this;
+  return function (...args) {
+    fn.apply(thisContext, [].concat(oargs, args));
+  };
+};
+```
+
+进阶，不能使用原生的`apply`、`call` , 如何实现
+
+那我们就应该去实现`apply` 了，apply 怎么去实现呢，我们可以按照上面的隐式 this 绑定规则，构造出来对应的函数执行环境
+
+``` javascript
+
+Function.prototype.apply = function (thisContext, args) {
+  thisContext = thisContext? Object(thisContext): window // window/global;
+  thisContext.fn = this;
+  const result = thisContext.fn(...args);
+  delete thisContext.fn;
+  return result;
+};
+
+```
+
+可以看到我们应用了 `根据上下文对象调用，绑定在该对象上` 这个规则，将`this`值构造出来Object `thisContext`,添加函数作为`thisContext.fn`,然后执行，将函数的 this 绑定在`thisContext` 上面

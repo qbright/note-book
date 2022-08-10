@@ -15,13 +15,11 @@ JS 语言在诞生之后就伴随着"不严谨","问题多"的说法, 加上浏�
 
 [async、await/promise](./promise-async-await.md)
 
-[context/this/call/apply/bind]
+[context/this/call/apply/bind](./context-this-call-apply-bind.md)
 
 [微任务/宏任务]
 
 [localStorage/sessionStorage/indexDB/cookie]
-
-[function(){}/()=>{}/this]
 
 [XMLHttpRequest/fetch]
 
@@ -36,4 +34,3 @@ JS 语言在诞生之后就伴随着"不严谨","问题多"的说法, 加上浏�
 [document.appendChild/document.write/element.innerHTML]
 
 [闭包]
-
